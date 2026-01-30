@@ -1,15 +1,36 @@
-import type {StructureResolver} from 'sanity/structure'
+import type { StructureResolver } from 'sanity/structure'
+import { MenuIcon, DocumentIcon } from '@sanity/icons'
+
+const SINGLETONS = ['header', 'footer']
 
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('Blog')
+    .title('Content')
     .items([
-      S.documentTypeListItem('post').title('Posts'),
-      S.documentTypeListItem('category').title('Categories'),
-      S.documentTypeListItem('author').title('Authors'),
+      // Header and Footer (singletons - should only have one each)
+      S.documentTypeListItem('header').title('Header'),
+      S.documentTypeListItem('footer').title('Footer'),
       S.divider(),
+      S.listItem()
+        .title('Foundation Pages')
+        .child(
+          S.documentList()
+            .title('Foundation Pages')
+            .filter('_type == "page" && site == "foundation"')
+            .defaultOrdering([{ field: 'title', direction: 'asc' }])
+        ),
+      S.listItem()
+        .title('School Pages')
+        .child(
+          S.documentList()
+            .title('School Pages')
+            .filter('_type == "page" && site == "school"')
+            .defaultOrdering([{ field: 'title', direction: 'asc' }])
+        ),
+      S.divider(),
+      // Filter singletons from generic lists
       ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['post', 'category', 'author'].includes(item.getId()!),
+        (item) => !SINGLETONS.includes(item.getId() as string)
       ),
     ])

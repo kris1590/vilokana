@@ -6,4 +6,6 @@ import { client } from './client'
 
 export const { sanityFetch, SanityLive } = defineLive({
   client,
+  serverToken: process.env.SANITY_API_READ_TOKEN || false,
+  browserToken: false, // Only needed for standalone draft preview, Presentation Tool handles this
 });

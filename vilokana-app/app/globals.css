@@ -1,26 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Foundation colors - muted earth tones, reflective */
+  --foundation-background: #faf9f7;
+  --foundation-foreground: #2d2d2d;
+  --foundation-primary: #5a7c5a;
+  --foundation-primary-foreground: #ffffff;
+  --foundation-muted: #e8e6e1;
+  --foundation-muted-foreground: #5a5a5a;
+
+  /* School colors - warmer, nurturing tones */
+  --school-background: #fefbf8;
+  --school-foreground: #2d2d2d;
+  --school-primary: #c97d4a;
+  --school-primary-foreground: #ffffff;
+  --school-muted: #f5e8dd;
+  --school-muted-foreground: #6b5a4f;
+
+  /* Default to Foundation */
+  --background: var(--foundation-background);
+  --foreground: var(--foundation-foreground);
+  --primary: var(--foundation-primary);
+  --primary-foreground: var(--foundation-primary-foreground);
+  --muted: var(--foundation-muted);
+  --muted-foreground: var(--foundation-muted-foreground);
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --font-family-sans: var(--font-sans), system-ui, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* School site styling */
+body[data-site="school"] {
+  --background: var(--school-background);
+  --foreground: var(--school-foreground);
+  --primary: var(--school-primary);
+  --primary-foreground: var(--school-primary-foreground);
+  --muted: var(--school-muted);
+  --muted-foreground: var(--school-muted-foreground);
 }
