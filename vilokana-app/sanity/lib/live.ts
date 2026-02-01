@@ -5,5 +5,18 @@ import { defineLive } from "next-sanity/live";
 import { client } from './client'
 
 export const { sanityFetch, SanityLive } = defineLive({
-  client,
+  client: client.withConfig({
+    // Live content is currently only available on the experimental API
+    // https://www.sanity.io/docs/api-versioning
+    apiVersion: "vX",
+    token: process.env.SANITY_API_TOKEN,
+  }),
 });
+
+export const fetchSanityData = async <T>(
+  params: Parameters<typeof sanityFetch>[0],
+) => {
+  const { data } = await sanityFetch(params);
+  return data as T;
+};
+
