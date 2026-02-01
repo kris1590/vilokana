@@ -5,8 +5,40 @@ sections[]{
   ...,
   _type == "hero" => {
     ...,
-    "image": image.asset->url,
+    "media": {
+      ...media,
+      "image": media.image.asset->url
+    },
+    "ctas": ctas[]{
+      ...,
+      "href": select(
+        linkType == "external" => externalLink.url,
+        "/" + internalLink.reference->slug.current
+      ),
+      "label": select(
+        linkType == "external" => externalLink.title,
+        internalLink.title
+      )
+    }
   },
+  _type == "cta" => {
+    ...,
+    "media": {
+      ...media,
+      "image": media.image.asset->url
+    },
+    "ctas": ctas[]{
+      ...,
+      "href": select(
+        linkType == "external" => externalLink.url,
+        "/" + internalLink.reference->slug.current
+      ),
+      "label": select(
+        linkType == "external" => externalLink.title,
+        internalLink.title
+      )
+    }
+  }
 }`;
 
 export const PAGE_QUERY = groq`

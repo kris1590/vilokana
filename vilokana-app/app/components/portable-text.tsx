@@ -29,28 +29,39 @@ const PortableTextComponent = ({
           },
           block: {
             heading1: ({ children }) => (
-              <div className="heading1">{children}</div>
+              <h1 className="font-serif text-3xl md:text-4xl font-semibold text-base-content tracking-tight">
+                {children}
+              </h1>
             ),
             heading2: ({ children }) => (
-              <div className="heading2">{children}</div>
+              <h2 className="font-serif text-2xl md:text-3xl font-semibold text-base-content tracking-tight">
+                {children}
+              </h2>
             ),
             heading3: ({ children }) => (
-              <div className="heading3">{children}</div>
+              <h3 className="font-serif text-xl md:text-2xl font-semibold text-base-content">
+                {children}
+              </h3>
             ),
             heading4: ({ children }) => (
-              <div className="heading4">{children}</div>
+              <h4 className="font-serif text-lg md:text-xl font-semibold text-base-content">
+                {children}
+              </h4>
             ),
             heading5: ({ children }) => (
-              <div className="heading5">{children}</div>
+              <h5 className="font-serif text-base md:text-lg font-semibold text-base-content">
+                {children}
+              </h5>
             ),
             heading6: ({ children }) => (
-              <div className="heading6">{children}</div>
+              <h6 className="font-serif text-sm md:text-base font-semibold text-base-content">
+                {children}
+              </h6>
             ),
           },
           marks: {
             link: ({ children, value }) => {
               let href = value?.href || "";
-              // Add https:// prefix if it's a domain without protocol
               if (
                 !href.startsWith("http://") &&
                 !href.startsWith("https://") &&
@@ -64,7 +75,7 @@ const PortableTextComponent = ({
                   href={href}
                   target={target}
                   rel={target === "_blank" ? "noopener noreferrer" : undefined}
-                  className="hover:underline cursor-pointer"
+                  className="link link-primary hover:underline cursor-pointer"
                 >
                   {children}
                 </a>

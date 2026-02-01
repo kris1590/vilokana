@@ -14,9 +14,12 @@
 
 // Source: schema.json
 export type Sections = Array<
-  {
-    _key: string;
-  } & Hero
+  | ({
+      _key: string;
+    } & Hero)
+  | ({
+      _key: string;
+    } & Cta)
 >;
 
 export type Cta = {
@@ -55,56 +58,6 @@ export type Cta = {
     };
   };
   theme?: Theme;
-};
-
-export type Theme = {
-  _type: 'theme';
-  backgroundColor?: Color;
-  backgroundImage?: {
-    asset?: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: 'image';
-  };
-  backgroundVideo?: {
-    asset?: {
-      _ref: string;
-      _type: 'reference';
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
-    };
-    media?: unknown;
-    _type: 'file';
-  };
-  padding?: {
-    top?: number;
-    bottom?: number;
-    left?: number;
-    right?: number;
-  };
-  maxWidth?: 'full' | 'container' | 'small' | 'medium' | 'large';
-};
-
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop';
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-};
-
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot';
-  x: number;
-  y: number;
-  height: number;
-  width: number;
 };
 
 export type BlockContent = Array<
@@ -217,6 +170,40 @@ export type Seo = {
   canonicalUrl?: string;
 };
 
+export type Theme = {
+  _type: 'theme';
+  backgroundColor?: Color;
+  backgroundImage?: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  };
+  backgroundVideo?: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+    };
+    media?: unknown;
+    _type: 'file';
+  };
+  padding?: {
+    top?: number;
+    bottom?: number;
+    left?: number;
+    right?: number;
+  };
+  maxWidth?: 'full' | 'container' | 'small' | 'medium' | 'large';
+};
+
 export type ExternalLink = {
   _type: 'externalLink';
   url: string;
@@ -274,6 +261,22 @@ export type Home = {
   sections?: Sections;
   seo?: Seo;
   theme?: Theme;
+};
+
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop';
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+};
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot';
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 };
 
 export type Color = {
@@ -435,18 +438,18 @@ export type Geopoint = {
 export type AllSanitySchemaTypes =
   | Sections
   | Cta
-  | Theme
-  | SanityImageCrop
-  | SanityImageHotspot
   | BlockContent
   | Hero
   | Seo
+  | Theme
   | ExternalLink
   | InternalLink
   | Link
   | Page
   | Slug
   | Home
+  | SanityImageCrop
+  | SanityImageHotspot
   | Color
   | Settings
   | RgbaColor
@@ -463,10 +466,10 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: refinedSectionsFragment
-// Query: sections[]{  ...,  _type == "hero" => {    ...,    "image": image.asset->url,  },}
+// Query: sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  }}
 export type RefinedSectionsFragmentResult = never;
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "image": image.asset->url,  },}  }
+// Query: *[_type == "page" && slug.current == $slug][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  }}  }
 export type PAGE_QUERYResult = {
   _id: string;
   _type: 'page';
@@ -477,47 +480,86 @@ export type PAGE_QUERYResult = {
   slug: Slug;
   seo?: Seo;
   theme?: Theme;
-  sections: Array<{
-    _key: string;
-    _type: 'hero';
-    title: BlockContent;
-    description?: BlockContent;
-    ctas?: Array<
-      {
+  sections: Array<
+    | {
         _key: string;
-      } & Link
-    >;
-    media?: {
-      type: 'image' | 'video';
-      image?: {
-        asset?: {
-          _ref: string;
-          _type: 'reference';
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-        };
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        _type: 'image';
-      };
-      video?: {
-        asset?: {
-          _ref: string;
-          _type: 'reference';
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
-        };
-        media?: unknown;
-        _type: 'file';
-      };
-    };
-    theme?: Theme;
-    image: null;
-  }> | null;
+        _type: 'cta';
+        overline?: string;
+        title: BlockContent;
+        description?: BlockContent;
+        ctas: Array<{
+          _key: string;
+          _type: 'link';
+          linkType: 'external' | 'internal';
+          variant?: 'outlined' | 'solid' | 'text';
+          color?: 'accent' | 'neutral' | 'primary' | 'secondary';
+          size?: 'large' | 'medium' | 'small';
+          internalLink?: InternalLink;
+          externalLink?: ExternalLink;
+          href: string | null;
+          label: string | null;
+        }> | null;
+        media:
+          | {
+              type: 'image' | 'video';
+              image: string | null;
+              video?: {
+                asset?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+                };
+                media?: unknown;
+                _type: 'file';
+              };
+            }
+          | {
+              image: string | null;
+            };
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'hero';
+        title: BlockContent;
+        description?: BlockContent;
+        ctas: Array<{
+          _key: string;
+          _type: 'link';
+          linkType: 'external' | 'internal';
+          variant?: 'outlined' | 'solid' | 'text';
+          color?: 'accent' | 'neutral' | 'primary' | 'secondary';
+          size?: 'large' | 'medium' | 'small';
+          internalLink?: InternalLink;
+          externalLink?: ExternalLink;
+          href: string | null;
+          label: string | null;
+        }> | null;
+        media:
+          | {
+              type: 'image' | 'video';
+              image: string | null;
+              video?: {
+                asset?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+                };
+                media?: unknown;
+                _type: 'file';
+              };
+            }
+          | {
+              image: string | null;
+            };
+        theme?: Theme;
+      }
+  > | null;
 } | null;
 // Variable: HOME_QUERY
-// Query: *[_type == "home"][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "image": image.asset->url,  },}  }
+// Query: *[_type == "home"][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  }}  }
 export type HOME_QUERYResult = {
   _id: string;
   _type: 'home';
@@ -525,44 +567,83 @@ export type HOME_QUERYResult = {
   _updatedAt: string;
   _rev: string;
   title: string;
-  sections: Array<{
-    _key: string;
-    _type: 'hero';
-    title: BlockContent;
-    description?: BlockContent;
-    ctas?: Array<
-      {
+  sections: Array<
+    | {
         _key: string;
-      } & Link
-    >;
-    media?: {
-      type: 'image' | 'video';
-      image?: {
-        asset?: {
-          _ref: string;
-          _type: 'reference';
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-        };
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        _type: 'image';
-      };
-      video?: {
-        asset?: {
-          _ref: string;
-          _type: 'reference';
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
-        };
-        media?: unknown;
-        _type: 'file';
-      };
-    };
-    theme?: Theme;
-    image: null;
-  }> | null;
+        _type: 'cta';
+        overline?: string;
+        title: BlockContent;
+        description?: BlockContent;
+        ctas: Array<{
+          _key: string;
+          _type: 'link';
+          linkType: 'external' | 'internal';
+          variant?: 'outlined' | 'solid' | 'text';
+          color?: 'accent' | 'neutral' | 'primary' | 'secondary';
+          size?: 'large' | 'medium' | 'small';
+          internalLink?: InternalLink;
+          externalLink?: ExternalLink;
+          href: string | null;
+          label: string | null;
+        }> | null;
+        media:
+          | {
+              type: 'image' | 'video';
+              image: string | null;
+              video?: {
+                asset?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+                };
+                media?: unknown;
+                _type: 'file';
+              };
+            }
+          | {
+              image: string | null;
+            };
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'hero';
+        title: BlockContent;
+        description?: BlockContent;
+        ctas: Array<{
+          _key: string;
+          _type: 'link';
+          linkType: 'external' | 'internal';
+          variant?: 'outlined' | 'solid' | 'text';
+          color?: 'accent' | 'neutral' | 'primary' | 'secondary';
+          size?: 'large' | 'medium' | 'small';
+          internalLink?: InternalLink;
+          externalLink?: ExternalLink;
+          href: string | null;
+          label: string | null;
+        }> | null;
+        media:
+          | {
+              type: 'image' | 'video';
+              image: string | null;
+              video?: {
+                asset?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+                };
+                media?: unknown;
+                _type: 'file';
+              };
+            }
+          | {
+              image: string | null;
+            };
+        theme?: Theme;
+      }
+  > | null;
   seo?: Seo;
   theme?: Theme;
 } | null;
@@ -571,8 +652,8 @@ export type HOME_QUERYResult = {
 import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
-    '\nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "image": image.asset->url,\n  },\n}': RefinedSectionsFragmentResult;
-    '\n  *[_type == "page" && slug.current == $slug][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "image": image.asset->url,\n  },\n}\n  }\n': PAGE_QUERYResult;
-    '\n  *[_type == "home"][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "image": image.asset->url,\n  },\n}\n  }\n': HOME_QUERYResult;
+    '\nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  }\n}': RefinedSectionsFragmentResult;
+    '\n  *[_type == "page" && slug.current == $slug][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  }\n}\n  }\n': PAGE_QUERYResult;
+    '\n  *[_type == "home"][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  }\n}\n  }\n': HOME_QUERYResult;
   }
 }

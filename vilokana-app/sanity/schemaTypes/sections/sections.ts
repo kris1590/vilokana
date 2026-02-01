@@ -6,7 +6,7 @@ export const sectionsType = defineType({
   type: "array",
   of: [
     { type: "hero" },
-
+    { type: "cta" },
   ],
   validation: (Rule) => Rule.unique(),
 });
