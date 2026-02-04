@@ -288,31 +288,32 @@ export type Color = {
   rgb?: RgbaColor;
 };
 
+export type Footer = {
+  _type: 'footer';
+  links: Array<
+    {
+      _key: string;
+    } & InternalLink
+  >;
+};
+
+export type Header = {
+  _type: 'header';
+  links: Array<
+    {
+      _key: string;
+    } & InternalLink
+  >;
+};
+
 export type Settings = {
   _id: string;
   _type: 'settings';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  header?: {
-    links: Array<
-      {
-        _key: string;
-      } & Link
-    >;
-  };
-  footer?: {
-    links: Array<
-      {
-        _key: string;
-      } & Link
-    >;
-    socialLinks: Array<
-      {
-        _key: string;
-      } & ExternalLink
-    >;
-  };
+  header?: Header;
+  footer?: Footer;
 };
 
 export type RgbaColor = {
@@ -451,6 +452,8 @@ export type AllSanitySchemaTypes =
   | SanityImageCrop
   | SanityImageHotspot
   | Color
+  | Footer
+  | Header
   | Settings
   | RgbaColor
   | HsvaColor
@@ -465,6 +468,37 @@ export type AllSanitySchemaTypes =
   | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
+// Variable: SETTINGS_QUERY
+// Query: *[_type == "settings"][0] {    header {      links[] { ..., }    },    footer {      links[] { ..., },      socialLinks[] { url, title, openInNewTab }    }  }
+export type SETTINGS_QUERYResult = {
+  header: {
+    links: Array<{
+      _key: string;
+      _type: 'internalLink';
+      reference: {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'page';
+      };
+      title?: string;
+    }>;
+  } | null;
+  footer: {
+    links: Array<{
+      _key: string;
+      _type: 'internalLink';
+      reference: {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'page';
+      };
+      title?: string;
+    }>;
+    socialLinks: null;
+  } | null;
+} | null;
 // Variable: refinedSectionsFragment
 // Query: sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  }}
 export type RefinedSectionsFragmentResult = never;
@@ -652,6 +686,7 @@ export type HOME_QUERYResult = {
 import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
+    '\n  *[_type == "settings"][0] {\n    header {\n      links[] { ..., }\n    },\n    footer {\n      links[] { ..., },\n      socialLinks[] { url, title, openInNewTab }\n    }\n  }\n': SETTINGS_QUERYResult;
     '\nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  }\n}': RefinedSectionsFragmentResult;
     '\n  *[_type == "page" && slug.current == $slug][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  }\n}\n  }\n': PAGE_QUERYResult;
     '\n  *[_type == "home"][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  }\n}\n  }\n': HOME_QUERYResult;

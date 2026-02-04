@@ -1,5 +1,18 @@
 import { groq } from "next-sanity";
 
+
+
+export const SETTINGS_QUERY = groq`
+  *[_type == "settings"][0] {
+    header {
+      links[] { ..., }
+    },
+    footer {
+      links[] { ..., }
+    }
+  }
+`;
+
 let refinedSectionsFragment = groq`
 sections[]{
   ...,
@@ -42,7 +55,7 @@ sections[]{
 }`;
 
 export const PAGE_QUERY = groq`
-  *[_type == "page" && slug.current == $slug][0] {
+    *[_type == "page" && slug.current == $slug][0] {
     ...,
     ${refinedSectionsFragment}
   }

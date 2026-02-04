@@ -8,37 +8,12 @@ export const settingsType = defineType({
     defineField({
       name: "header",
       title: "Header",
-      type: "object",
-      fields: [
-        {
-          name: "links",
-          title: "Navigation Links",
-          type: "array",
-          of: [{ type: "link" }],
-          validation: (Rule) => Rule.required(),
-        },
-      ],
+      type: "header",
     }),
     defineField({
       name: "footer",
       title: "Footer",
-      type: "object",
-      fields: [
-        {
-          name: "links",
-          title: "Footer Links",
-          type: "array",
-          of: [{ type: "link" }],
-          validation: (Rule) => Rule.required(),
-        },
-        {
-          name: "socialLinks",
-          title: "Social Media Links",
-          type: "array",
-          of: [{ type: "externalLink" }],
-          validation: (Rule) => Rule.required(),
-        },
-      ],
+      type: "footer",
     }),
   ],
 });
