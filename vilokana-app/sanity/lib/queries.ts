@@ -79,14 +79,6 @@ sections[]{
     "images": images[]{
       _key,
       _type,
-      _type == "reference" => @->{
-        _id,
-        title,
-        image,
-        caption,
-        category,
-        tags
-      },
       _type == "image" => {
         ...,
         "asset": asset->url,

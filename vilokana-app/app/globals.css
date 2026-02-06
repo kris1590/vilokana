@@ -1,7 +1,7 @@
 /*
  * Vilokana Design System — global.css
- * All brand tokens live here. No component or section should define colors or fonts directly.
- * See docs/brand.md for brand identity and token reference.
+ * All brand tokens and reusable utilities live here.
+ * No component or section should define colors, fonts, or repeated patterns directly.
  *
  * Build note: Next.js (Turbopack/Lightning CSS) may show: "Unknown at rule: @property"
  * for DaisyUI's radial progress component. This is a known limitation; the build still
@@ -10,9 +10,10 @@
 
 @import "tailwindcss";
 @plugin "daisyui";
+@plugin "@tailwindcss/typography";
 
 /* ==========================================================================
-   DESIGN TOKENS — CSS variables (semantic colors, spacing, typography)
+   1. DESIGN TOKENS — CSS variables (semantic colors, spacing, typography)
    ========================================================================== */
 
 :root {
@@ -21,7 +22,7 @@
   --color-primary-content: #faf9f6;
   --color-secondary: #7d8471;      /* Sage — calm, natural */
   --color-secondary-content: #faf9f6;
-  --color-accent: #b7472a;          /* Terracotta — hope, warmth */
+  --color-accent: #b7472a;         /* Terracotta — hope, warmth */
   --color-accent-content: #faf9f6;
   --color-neutral-bg: #f5f3ed;     /* Cream — section backgrounds */
   --color-neutral-bg-alt: #e8e6e0;
@@ -32,11 +33,16 @@
   --color-error: #8b3a3a;
 
   /* Spacing scale (no magic numbers) */
-  --space-section: 4rem;            /* Vertical rhythm between sections */
+  --space-section: 4rem;           /* Vertical rhythm between sections */
   --space-section-sm: 2.5rem;
   --space-section-lg: 5rem;
   --space-container-x: 1.5rem;     /* Horizontal padding for containers */
-  --space-content: 1.25rem;         /* Between content blocks */
+  --space-content: 1.25rem;        /* Between content blocks */
+
+  /* Gap tokens (consistent spacing) */
+  --gap-card: 2rem;                /* 32px - gap between cards */
+  --gap-content: 1.5rem;           /* 24px - gap within content */
+  --gap-section-header: 3rem;      /* 48px - margin-bottom for section headers */
 
   /* Layout */
   --container-max: 72rem;          /* Max-width for content containers */
@@ -52,7 +58,7 @@
   --radius-lg: 0.5rem;
 }
 
-/* DaisyUI theme override — maps our brand tokens to DaisyUI semantic names (hex) */
+/* DaisyUI theme override — maps our brand tokens to DaisyUI semantic names */
 [data-theme="vilokana"] {
   color-scheme: light;
   --p: #2d4a2b;
@@ -78,7 +84,7 @@
 }
 
 /* ==========================================================================
-   Tailwind @theme — expose design tokens to Tailwind utilities
+   2. TAILWIND @theme — expose design tokens to Tailwind utilities
    ========================================================================== */
 
 @theme inline {
@@ -86,11 +92,10 @@
   --color-foreground: var(--bc, var(--color-text));
   --font-sans: var(--font-body);
   --font-serif: var(--font-heading);
-  /* Spacing and layout available via CSS vars; use utilities like max-w-[72rem] or custom classes below */
 }
 
 /* ==========================================================================
-   Base typography (global.css only — no component-level overrides)
+   3. BASE TYPOGRAPHY
    ========================================================================== */
 
 @layer base {
@@ -122,6 +127,235 @@
   p {
     margin-bottom: var(--space-content);
   }
+}
+
+/* ==========================================================================
+   4. COMPONENT UTILITIES — Reusable patterns across sections
+   ========================================================================== */
+
+@layer components {
+  /* -------------------------------------------------------------------------
+     Section Header — centered title + description pattern (used in 8/9 sections)
+     ------------------------------------------------------------------------- */
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--gap-section-header);
+  }
+
+  .section-header-left {
+    text-align: left;
+    margin-bottom: var(--gap-section-header);
+  }
+
+  /* -------------------------------------------------------------------------
+     Overline/Eyebrow — small uppercase text above titles
+     ------------------------------------------------------------------------- */
+  .overline {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+
+  /* -------------------------------------------------------------------------
+     Card Utilities — standardized hover and border behavior
+     ------------------------------------------------------------------------- */
+  .card-hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    transition-property: box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+
+  .card-hover:hover {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  }
+
+  .card-bordered {
+    border: 1px solid var(--b3, #e8e6e0);
+  }
+
+  /* -------------------------------------------------------------------------
+     Grid Layouts — common responsive grid patterns
+     ------------------------------------------------------------------------- */
+  .grid-cards {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: var(--gap-card);
+  }
+
+  @media (min-width: 768px) {
+    .grid-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .grid-cards-4 {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: var(--gap-card);
+  }
+
+  @media (min-width: 640px) {
+    .grid-cards-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-cards-4 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .grid-cards-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .grid-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-card);
+  }
+
+  @media (min-width: 768px) {
+    .grid-stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .grid-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .grid-gallery {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-gallery {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* -------------------------------------------------------------------------
+     Split Content Layouts — two-column with media patterns
+     ------------------------------------------------------------------------- */
+  .split-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-card);
+  }
+
+  @media (min-width: 1024px) {
+    .split-content {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .split-content-reverse {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-card);
+  }
+
+  @media (min-width: 1024px) {
+    .split-content-reverse {
+      flex-direction: row-reverse;
+      align-items: center;
+    }
+  }
+
+  .split-content-centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* -------------------------------------------------------------------------
+     Image Utilities — common image patterns
+     ------------------------------------------------------------------------- */
+  .img-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .img-rounded {
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .img-hover-zoom {
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+
+  .group:hover .img-hover-zoom {
+    transform: scale(1.05);
+  }
+
+  /* -------------------------------------------------------------------------
+     Stat Display — statistics/impact numbers
+     ------------------------------------------------------------------------- */
+  .stat-value {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .stat-value {
+      font-size: 3rem;
+    }
+  }
+
+  .stat-suffix {
+    font-size: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .stat-suffix {
+      font-size: 1.875rem;
+    }
+  }
+
+  .stat-label {
+    font-weight: 500;
+    color: color-mix(in oklch, var(--color-text) 70%, transparent);
+  }
+
+  /* -------------------------------------------------------------------------
+     Text Utilities — common text patterns
+     ------------------------------------------------------------------------- */
+  .text-muted {
+    color: color-mix(in oklch, var(--color-text) 70%, transparent);
+  }
+
+  .text-subtle {
+    color: color-mix(in oklch, var(--color-text) 60%, transparent);
+  }
 
   .text-small {
     font-size: 0.875rem;
@@ -130,10 +364,11 @@
 }
 
 /* ==========================================================================
-   Global layout utilities (design system)
+   5. LAYOUT UTILITIES
    ========================================================================== */
 
 @layer utilities {
+  /* Section Spacing */
   .section-spacing {
     padding-top: var(--space-section);
     padding-bottom: var(--space-section);
@@ -149,6 +384,7 @@
     padding-bottom: var(--space-section-lg);
   }
 
+  /* Container Utilities */
   .container-content {
     width: 100%;
     max-width: var(--container-max);

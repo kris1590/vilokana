@@ -32,9 +32,7 @@ const DonateSectionComponent = ({ data }: DonateSectionProps) => {
       {image && (
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${urlFor(image as SanityImageSource).url()})`,
-          }}
+          style={{ backgroundImage: `url(${urlFor(image as SanityImageSource).url()})` }}
         >
           <div className="absolute inset-0 bg-primary/90" />
         </div>
@@ -42,28 +40,27 @@ const DonateSectionComponent = ({ data }: DonateSectionProps) => {
 
       {/* Content */}
       <div
-        className={`relative z-10 text-center max-w-3xl mx-auto ${image ? "text-primary-content" : "bg-primary text-primary-content rounded-2xl p-12"
-          }`}
+        className={`relative z-10 text-center max-w-3xl mx-auto ${
+          image ? "text-primary-content" : "bg-primary text-primary-content rounded-2xl p-12"
+        }`}
       >
         {highlightText && (
-          <span className="inline-block mb-4 px-4 py-2 bg-white/20 rounded-full text-sm font-semibold">
+          <span className="overline inline-block px-4 py-2 bg-white/20 rounded-full !text-primary-content !mb-4">
             {highlightText}
           </span>
         )}
 
         {title && (
-          <div className="mb-6">
-            <PortableTextComponent
-              value={title}
-              className="prose prose-lg prose-invert max-w-none **:text-primary-content"
-            />
-          </div>
+          <PortableTextComponent
+            value={title}
+            className="prose prose-lg max-w-none prose-invert mb-6 **:text-primary-content"
+          />
         )}
 
         {description && (
           <PortableTextComponent
             value={description}
-            className="prose prose-invert max-w-2xl mx-auto mb-8 **:text-primary-content/90"
+            className="prose max-w-2xl mx-auto prose-invert mb-8 **:text-primary-content/90"
           />
         )}
 

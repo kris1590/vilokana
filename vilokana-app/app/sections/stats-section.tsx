@@ -10,25 +10,20 @@ const StatsSectionComponent = ({ data }: StatsSectionProps) => {
   return (
     <SectionContainer as="section" spacing="lg" className="bg-base-200">
       {title && (
-        <div className="text-center mb-12">
-          <PortableTextComponent
-            value={title}
-            className="prose prose-lg max-w-none mx-auto"
-          />
+        <div className="section-header">
+          <PortableTextComponent value={title} className="prose prose-lg max-w-none" />
         </div>
       )}
 
       {stats && stats.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid-stats">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
+              <div className="stat-value">
                 {stat.value}
-                {stat.suffix && (
-                  <span className="text-2xl md:text-3xl">{stat.suffix}</span>
-                )}
+                {stat.suffix && <span className="stat-suffix">{stat.suffix}</span>}
               </div>
-              <p className="text-base-content/70 font-medium">{stat.label}</p>
+              <p className="stat-label">{stat.label}</p>
             </div>
           ))}
         </div>

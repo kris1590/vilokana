@@ -27,30 +27,18 @@ const EventsSectionComponent = ({ data }: EventsSectionProps) => {
       day: date.getDate(),
       month: date.toLocaleDateString("en-US", { month: "short" }),
       year: date.getFullYear(),
-      time: date.toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-      }),
+      time: date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }),
     };
   };
 
   return (
     <SectionContainer as="section" spacing="lg" className="bg-base-100">
-      <div className="text-center mb-12">
+      <div className="section-header">
         {title && (
-          <div className="mb-4">
-            <PortableTextComponent
-              value={title}
-              className="prose prose-lg max-w-none mx-auto"
-            />
-          </div>
+          <PortableTextComponent value={title} className="prose prose-lg max-w-none mb-4" />
         )}
-
         {description && (
-          <PortableTextComponent
-            value={description}
-            className="prose max-w-2xl mx-auto text-base-content/70"
-          />
+          <PortableTextComponent value={description} className="prose max-w-2xl mx-auto text-muted" />
         )}
       </div>
 
@@ -62,7 +50,7 @@ const EventsSectionComponent = ({ data }: EventsSectionProps) => {
             return (
               <div
                 key={event._id}
-                className="card card-side bg-base-100 shadow-md hover:shadow-lg transition-shadow border border-base-200 overflow-hidden"
+                className="card card-side bg-base-100 card-hover card-bordered overflow-hidden"
               >
                 {/* Date Badge */}
                 {dateInfo && (
@@ -79,7 +67,7 @@ const EventsSectionComponent = ({ data }: EventsSectionProps) => {
                     <img
                       src={urlFor(event.image).width(400).height(300).url()}
                       alt={event.title}
-                      className="w-full h-full object-cover"
+                      className="img-cover"
                     />
                   </figure>
                 )}
@@ -88,47 +76,20 @@ const EventsSectionComponent = ({ data }: EventsSectionProps) => {
                 <div className="card-body">
                   <h3 className="card-title font-serif">{event.title}</h3>
 
-                  <div className="flex flex-wrap gap-4 text-sm text-base-content/60">
+                  <div className="flex flex-wrap gap-4 text-sm text-subtle">
                     {dateInfo && (
                       <span className="flex items-center gap-1">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         {dateInfo.time}
                       </span>
                     )}
                     {event.location && (
                       <span className="flex items-center gap-1">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                         {event.location}
                       </span>
@@ -138,7 +99,7 @@ const EventsSectionComponent = ({ data }: EventsSectionProps) => {
                   {event.description && (
                     <PortableTextComponent
                       value={event.description as any}
-                      className="prose prose-sm text-base-content/70 line-clamp-2 mt-2"
+                      className="prose prose-sm line-clamp-2 mt-2"
                     />
                   )}
                 </div>

@@ -21,20 +21,16 @@ export const gallerySectionType = defineType({
       type: "array",
       of: [
         {
-          type: "reference",
-          to: [{ type: "galleryItem" }],
-        },
-        {
           type: "image",
           options: {
             hotspot: true,
           },
           fields: [
-            {
+            defineField({
               name: "alt",
               type: "string",
               title: "Alternative Text",
-            },
+            }),
             {
               name: "caption",
               type: "string",

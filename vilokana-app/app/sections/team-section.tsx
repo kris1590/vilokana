@@ -21,65 +21,44 @@ const TeamSectionComponent = ({ data }: TeamSectionProps) => {
 
   return (
     <SectionContainer as="section" spacing="lg" className="bg-base-200">
-      <div className="text-center mb-12">
+      <div className="section-header">
         {title && (
-          <div className="mb-4">
-            <PortableTextComponent
-              value={title}
-              className="prose prose-lg max-w-none mx-auto"
-            />
-          </div>
+          <PortableTextComponent value={title} className="prose prose-lg max-w-none mb-4" />
         )}
-
         {description && (
-          <PortableTextComponent
-            value={description}
-            className="prose max-w-2xl mx-auto text-base-content/70"
-          />
+          <PortableTextComponent value={description} className="prose max-w-2xl mx-auto text-muted" />
         )}
       </div>
 
       {members && members.length > 0 && (
-        <div
-          className={
-            layout === "list"
-              ? "flex flex-col gap-8"
-              : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-          }
-        >
+        <div className={layout === "list" ? "flex flex-col gap-8" : "grid-cards-4"}>
           {members.map((member) => (
             <div
               key={member._id}
-              className={`card bg-base-100 shadow-md hover:shadow-lg transition-shadow ${layout === "list" ? "card-side" : ""
-                }`}
+              className={`card bg-base-100 card-hover ${layout === "list" ? "card-side" : ""}`}
             >
               {member.image && (
-                <figure
-                  className={
-                    layout === "list" ? "w-48 shrink-0" : "px-6 pt-6"
-                  }
-                >
+                <figure className={layout === "list" ? "w-48 shrink-0" : "px-6 pt-6"}>
                   <img
                     src={urlFor(member.image).width(400).height(400).url()}
                     alt={member.name}
-                    className={`${layout === "list"
-                        ? "w-full h-full object-cover"
+                    className={
+                      layout === "list"
+                        ? "img-cover"
                         : "rounded-full w-32 h-32 object-cover mx-auto"
-                      }`}
+                    }
                   />
                 </figure>
               )}
               <div className="card-body items-center text-center">
                 <h3 className="card-title font-serif">{member.name}</h3>
                 {member.role && (
-                  <p className="text-primary text-sm font-medium">
-                    {member.role}
-                  </p>
+                  <p className="text-primary text-sm font-medium">{member.role}</p>
                 )}
                 {member.bio && (
                   <PortableTextComponent
                     value={member.bio as any}
-                    className="prose prose-sm text-base-content/70 mt-2"
+                    className="prose prose-sm mt-2"
                   />
                 )}
               </div>

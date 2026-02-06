@@ -35,30 +35,21 @@ const ProgramsSectionComponent = ({ data }: ProgramsSectionProps) => {
 
   return (
     <SectionContainer as="section" spacing="lg" className="bg-base-100">
-      <div className="text-center mb-12">
+      <div className="section-header">
         {title && (
-          <div className="mb-4">
-            <PortableTextComponent
-              value={title}
-              className="prose prose-lg max-w-none mx-auto"
-            />
-          </div>
+          <PortableTextComponent value={title} className="prose prose-lg max-w-none mb-4" />
         )}
-
         {description && (
-          <PortableTextComponent
-            value={description}
-            className="prose max-w-2xl mx-auto text-base-content/70"
-          />
+          <PortableTextComponent value={description} className="prose max-w-2xl mx-auto text-muted" />
         )}
       </div>
 
       {programs && programs.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid-cards">
           {programs.map((program) => (
             <div
               key={program._id}
-              className="card bg-base-100 shadow-md hover:shadow-xl transition-shadow border border-base-200"
+              className="card bg-base-100 card-hover card-bordered"
             >
               {program.image && (
                 <figure>
@@ -71,13 +62,9 @@ const ProgramsSectionComponent = ({ data }: ProgramsSectionProps) => {
               )}
               <div className="card-body">
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className="card-title font-serif text-lg">
-                    {program.title}
-                  </h3>
+                  <h3 className="card-title font-serif text-lg">{program.title}</h3>
                   {program.category && (
-                    <span
-                      className={`badge ${getCategoryBadgeColor(program.category)} badge-sm`}
-                    >
+                    <span className={`badge ${getCategoryBadgeColor(program.category)} badge-sm`}>
                       {program.category}
                     </span>
                   )}
@@ -86,17 +73,14 @@ const ProgramsSectionComponent = ({ data }: ProgramsSectionProps) => {
                 {program.description && (
                   <PortableTextComponent
                     value={program.description as any}
-                    className="prose prose-sm text-base-content/70 line-clamp-3"
+                    className="prose prose-sm line-clamp-3"
                   />
                 )}
 
                 {program.highlights && program.highlights.length > 0 && (
                   <ul className="mt-4 space-y-1">
                     {program.highlights.slice(0, 3).map((highlight, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start gap-2 text-sm text-base-content/80"
-                      >
+                      <li key={index} className="flex items-start gap-2 text-sm text-muted">
                         <span className="text-primary mt-1">•</span>
                         {highlight}
                       </li>
