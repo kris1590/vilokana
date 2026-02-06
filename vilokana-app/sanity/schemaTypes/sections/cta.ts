@@ -22,11 +22,11 @@ export const ctaType = defineType({
       type: "blockContent",
     }),
     defineField({
-      name: "ctas",
+      name: "cta1",
       title: "Call to Actions",
       type: "array",
-      of: [{ type: "link" }],
-      validation: (Rule) => Rule.max(2),
+      of: [{ type: "internalLink" }],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "media",

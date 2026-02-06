@@ -3,6 +3,7 @@ import {
   PortableText,
   PortableTextProps as SanityPortableTextProps,
 } from "next-sanity";
+import AppLink from "./link";
 
 type PortableTextProps = {
   value: SanityPortableTextProps["value"];
@@ -69,16 +70,13 @@ const PortableTextComponent = ({
               ) {
                 href = `https://${href}`;
               }
-              const target = !href.startsWith("/") ? "_blank" : undefined;
               return (
-                <a
+                <AppLink
                   href={href}
-                  target={target}
-                  rel={target === "_blank" ? "noopener noreferrer" : undefined}
                   className="link link-primary hover:underline cursor-pointer"
                 >
                   {children}
-                </a>
+                </AppLink>
               );
             },
             phone: ({ children, value }) => (

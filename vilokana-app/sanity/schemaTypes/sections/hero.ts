@@ -19,11 +19,10 @@ export const heroType = defineType({
       type: "blockContent",
     }),
     defineField({
-      name: "ctas",
+      name: "cta",
       title: "Call to Actions",
-      type: "array",
-      of: [{ type: "link" }],
-      validation: (Rule) => Rule.max(2),
+      type: "internalLink",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "media",

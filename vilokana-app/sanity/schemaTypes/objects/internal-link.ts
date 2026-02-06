@@ -9,7 +9,7 @@ export const internalLinkType = defineType({
       name: "reference",
       title: "Reference",
       type: "reference",
-      to: [{ type: "page" }],
+      to: [{ type: "page" }, { type: "home" }],
       validation: (Rule) => Rule.required(),
     }),
     defineField({

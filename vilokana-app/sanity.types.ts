@@ -20,20 +20,218 @@ export type Sections = Array<
   | ({
       _key: string;
     } & Cta)
+  | ({
+      _key: string;
+    } & ContentSection)
+  | ({
+      _key: string;
+    } & TeamSection)
+  | ({
+      _key: string;
+    } & ProgramsSection)
+  | ({
+      _key: string;
+    } & GallerySection)
+  | ({
+      _key: string;
+    } & EventsSection)
+  | ({
+      _key: string;
+    } & DonateSection)
+  | ({
+      _key: string;
+    } & StatsSection)
 >;
+
+export type StatsSection = {
+  _type: 'statsSection';
+  title?: BlockContent;
+  stats?: Array<{
+    value?: string;
+    label?: string;
+    suffix?: string;
+    _key: string;
+  }>;
+  theme?: Theme;
+};
+
+export type DonateSection = {
+  _type: 'donateSection';
+  title?: BlockContent;
+  description?: BlockContent;
+  cta?: InternalLink;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  };
+  highlightText?: string;
+  theme?: Theme;
+};
+
+export type EventsSection = {
+  _type: 'eventsSection';
+  title?: BlockContent;
+  description?: BlockContent;
+  events?: Array<{
+    _ref: string;
+    _type: 'reference';
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: 'event';
+  }>;
+  showUpcoming?: boolean;
+  theme?: Theme;
+};
+
+export type GallerySection = {
+  _type: 'gallerySection';
+  title?: BlockContent;
+  description?: BlockContent;
+  images?: Array<
+    | {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        _key: string;
+        [internalGroqTypeReferenceTo]?: 'galleryItem';
+      }
+    | {
+        asset?: {
+          _ref: string;
+          _type: 'reference';
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        _type: 'image';
+        _key: string;
+      }
+  >;
+  layout?: 'grid' | 'masonry' | 'carousel';
+  theme?: Theme;
+};
+
+export type ProgramsSection = {
+  _type: 'programsSection';
+  title?: BlockContent;
+  description?: BlockContent;
+  programs?: Array<{
+    _ref: string;
+    _type: 'reference';
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: 'program';
+  }>;
+  showAll?: boolean;
+  theme?: Theme;
+};
+
+export type TeamSection = {
+  _type: 'teamSection';
+  title?: BlockContent;
+  description?: BlockContent;
+  members?: Array<{
+    _ref: string;
+    _type: 'reference';
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: 'teamMember';
+  }>;
+  layout?: 'grid' | 'list';
+  theme?: Theme;
+};
+
+export type ContentSection = {
+  _type: 'contentSection';
+  overline?: string;
+  title?: BlockContent;
+  content?: BlockContent;
+  media?: {
+    type?: 'none' | 'image' | 'video';
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+    video?: {
+      asset?: {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+      };
+      media?: unknown;
+      _type: 'file';
+    };
+  };
+  layout?: 'text-left' | 'text-right' | 'centered';
+  theme?: Theme;
+};
 
 export type Cta = {
   _type: 'cta';
   overline?: string;
-  title: BlockContent;
+  title?: BlockContent;
   description?: BlockContent;
-  ctas?: Array<
+  cta1?: Array<
     {
       _key: string;
-    } & Link
+    } & InternalLink
   >;
   media?: {
-    type: 'image' | 'video';
+    type?: 'image' | 'video';
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    };
+    video?: {
+      asset?: {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+      };
+      media?: unknown;
+      _type: 'file';
+    };
+  };
+  theme?: Theme;
+};
+
+export type Hero = {
+  _type: 'hero';
+  title?: BlockContent;
+  description?: BlockContent;
+  cta?: InternalLink;
+  media?: {
+    type?: 'image' | 'video';
     image?: {
       asset?: {
         _ref: string;
@@ -110,43 +308,6 @@ export type BlockContent = Array<
     }
 >;
 
-export type Hero = {
-  _type: 'hero';
-  title: BlockContent;
-  description?: BlockContent;
-  ctas?: Array<
-    {
-      _key: string;
-    } & Link
-  >;
-  media?: {
-    type: 'image' | 'video';
-    image?: {
-      asset?: {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: 'image';
-    };
-    video?: {
-      asset?: {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
-      };
-      media?: unknown;
-      _type: 'file';
-    };
-  };
-  theme?: Theme;
-};
-
 export type Seo = {
   _type: 'seo';
   title?: string;
@@ -206,30 +367,159 @@ export type Theme = {
 
 export type ExternalLink = {
   _type: 'externalLink';
-  url: string;
-  title: string;
+  url?: string;
+  title?: string;
   openInNewTab?: boolean;
 };
 
 export type InternalLink = {
   _type: 'internalLink';
-  reference: {
-    _ref: string;
-    _type: 'reference';
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: 'page';
-  };
+  reference?:
+    | {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'page';
+      }
+    | {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'home';
+      };
   title?: string;
 };
 
 export type Link = {
   _type: 'link';
-  linkType: 'internal' | 'external';
+  linkType?: 'internal' | 'external';
   variant?: 'solid' | 'outlined' | 'text';
   color?: 'primary' | 'secondary' | 'accent' | 'neutral';
   size?: 'small' | 'medium' | 'large';
   internalLink?: InternalLink;
   externalLink?: ExternalLink;
+};
+
+export type GalleryItem = {
+  _id: string;
+  _type: 'galleryItem';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  };
+  caption?: string;
+  category?: 'vilokana' | 'anvaya' | 'general';
+  tags?: Array<string>;
+};
+
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop';
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot';
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type Event = {
+  _id: string;
+  _type: 'event';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  date?: string;
+  description?: BlockContent;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  };
+  location?: string;
+};
+
+export type Slug = {
+  _type: 'slug';
+  current?: string;
+  source?: string;
+};
+
+export type Program = {
+  _id: string;
+  _type: 'program';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  description?: BlockContent;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  };
+  highlights?: Array<string>;
+  outcomes?: Array<string>;
+  category?: 'workshop' | 'camp' | 'initiative';
+  organization?: 'vilokana' | 'anvaya';
+};
+
+export type TeamMember = {
+  _id: string;
+  _type: 'teamMember';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  role?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  };
+  bio?: BlockContent;
+  organization?: 'vilokana' | 'anvaya' | 'both';
 };
 
 export type Page = {
@@ -238,17 +528,11 @@ export type Page = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title: string;
-  slug: Slug;
+  title?: string;
+  slug?: Slug;
   seo?: Seo;
   theme?: Theme;
   sections?: Sections;
-};
-
-export type Slug = {
-  _type: 'slug';
-  current: string;
-  source?: string;
 };
 
 export type Home = {
@@ -257,26 +541,10 @@ export type Home = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title: string;
+  title?: string;
   sections?: Sections;
   seo?: Seo;
   theme?: Theme;
-};
-
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop';
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-};
-
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot';
-  x: number;
-  y: number;
-  height: number;
-  width: number;
 };
 
 export type Color = {
@@ -290,7 +558,7 @@ export type Color = {
 
 export type Footer = {
   _type: 'footer';
-  links: Array<
+  links?: Array<
     {
       _key: string;
     } & InternalLink
@@ -299,7 +567,7 @@ export type Footer = {
 
 export type Header = {
   _type: 'header';
-  links: Array<
+  links?: Array<
     {
       _key: string;
     } & InternalLink
@@ -361,9 +629,9 @@ export type SanityImagePalette = {
 
 export type SanityImageDimensions = {
   _type: 'sanity.imageDimensions';
-  height: number;
-  width: number;
-  aspectRatio: number;
+  height?: number;
+  width?: number;
+  aspectRatio?: number;
 };
 
 export type SanityImageMetadata = {
@@ -438,19 +706,30 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes =
   | Sections
+  | StatsSection
+  | DonateSection
+  | EventsSection
+  | GallerySection
+  | ProgramsSection
+  | TeamSection
+  | ContentSection
   | Cta
-  | BlockContent
   | Hero
+  | BlockContent
   | Seo
   | Theme
   | ExternalLink
   | InternalLink
   | Link
-  | Page
-  | Slug
-  | Home
+  | GalleryItem
   | SanityImageCrop
   | SanityImageHotspot
+  | Event
+  | Slug
+  | Program
+  | TeamMember
+  | Page
+  | Home
   | Color
   | Footer
   | Header
@@ -469,73 +748,241 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: SETTINGS_QUERY
-// Query: *[_type == "settings"][0] {    header {      links[] { ..., }    },    footer {      links[] { ..., },      socialLinks[] { url, title, openInNewTab }    }  }
+// Query: *[_type == "settings"][0] {    header {      links[] { ..., }    },    footer {      links[] { ..., }    }  }
 export type SETTINGS_QUERYResult = {
   header: {
     links: Array<{
       _key: string;
       _type: 'internalLink';
-      reference: {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'page';
-      };
+      reference?:
+        | {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'home';
+          }
+        | {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'page';
+          };
       title?: string;
-    }>;
+    }> | null;
   } | null;
   footer: {
     links: Array<{
       _key: string;
       _type: 'internalLink';
-      reference: {
-        _ref: string;
-        _type: 'reference';
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: 'page';
-      };
+      reference?:
+        | {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'home';
+          }
+        | {
+            _ref: string;
+            _type: 'reference';
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: 'page';
+          };
       title?: string;
-    }>;
-    socialLinks: null;
+    }> | null;
   } | null;
 } | null;
 // Variable: refinedSectionsFragment
-// Query: sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  }}
+// Query: sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    cta{      ...,    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "contentSection" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    }  },  _type == "teamSection" => {    ...,    "members": members[]->{      _id,      name,      role,      image,      bio,      organization    }  },  _type == "programsSection" => {    ...,    "programs": programs[]->{      _id,      title,      slug,      description,      image,      highlights,      outcomes,      category,      organization    }  },  _type == "gallerySection" => {    ...,    "images": images[]{      _key,      _type,      _type == "reference" => @->{        _id,        title,        image,        caption,        category,        tags      },      _type == "image" => {        ...,        "asset": asset->url,        alt,        caption      }    }  },  _type == "eventsSection" => {    ...,    "events": events[]->{      _id,      title,      slug,      date,      description,      image,      location    }  },  _type == "donateSection" => {    ...,    "image": image.asset->url,    cta{      ...,      "reference": reference->{        _type,        "slug": slug      }    }  },  _type == "statsSection" => {    ...  }}
 export type RefinedSectionsFragmentResult = never;
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  }}  }
+// Query: *[_type == "page" && slug.current == $slug][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    cta{      ...,    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "contentSection" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    }  },  _type == "teamSection" => {    ...,    "members": members[]->{      _id,      name,      role,      image,      bio,      organization    }  },  _type == "programsSection" => {    ...,    "programs": programs[]->{      _id,      title,      slug,      description,      image,      highlights,      outcomes,      category,      organization    }  },  _type == "gallerySection" => {    ...,    "images": images[]{      _key,      _type,      _type == "reference" => @->{        _id,        title,        image,        caption,        category,        tags      },      _type == "image" => {        ...,        "asset": asset->url,        alt,        caption      }    }  },  _type == "eventsSection" => {    ...,    "events": events[]->{      _id,      title,      slug,      date,      description,      image,      location    }  },  _type == "donateSection" => {    ...,    "image": image.asset->url,    cta{      ...,      "reference": reference->{        _type,        "slug": slug      }    }  },  _type == "statsSection" => {    ...  }}  }
 export type PAGE_QUERYResult = {
   _id: string;
   _type: 'page';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title: string;
-  slug: Slug;
+  title?: string;
+  slug?: Slug;
   seo?: Seo;
   theme?: Theme;
   sections: Array<
     | {
         _key: string;
-        _type: 'cta';
+        _type: 'contentSection';
         overline?: string;
-        title: BlockContent;
-        description?: BlockContent;
-        ctas: Array<{
-          _key: string;
-          _type: 'link';
-          linkType: 'external' | 'internal';
-          variant?: 'outlined' | 'solid' | 'text';
-          color?: 'accent' | 'neutral' | 'primary' | 'secondary';
-          size?: 'large' | 'medium' | 'small';
-          internalLink?: InternalLink;
-          externalLink?: ExternalLink;
-          href: string | null;
-          label: string | null;
-        }> | null;
+        title?: BlockContent;
+        content?: BlockContent;
         media:
           | {
-              type: 'image' | 'video';
+              type?: 'image' | 'none' | 'video';
+              image: string | null;
+              video?: {
+                asset?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+                };
+                media?: unknown;
+                _type: 'file';
+              };
+            }
+          | {
+              image: string | null;
+            };
+        layout?: 'centered' | 'text-left' | 'text-right';
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'cta';
+        overline?: string;
+        title?: BlockContent;
+        description?: BlockContent;
+        cta1?: Array<
+          {
+            _key: string;
+          } & InternalLink
+        >;
+        media:
+          | {
+              type?: 'image' | 'video';
+              image: string | null;
+              video?: {
+                asset?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+                };
+                media?: unknown;
+                _type: 'file';
+              };
+            }
+          | {
+              image: string | null;
+            };
+        theme?: Theme;
+        ctas: null;
+      }
+    | {
+        _key: string;
+        _type: 'donateSection';
+        title?: BlockContent;
+        description?: BlockContent;
+        cta: {
+          _type: 'internalLink';
+          reference:
+            | {
+                _type: 'home';
+                slug: null;
+              }
+            | {
+                _type: 'page';
+                slug: Slug | null;
+              }
+            | null;
+          title?: string;
+        } | null;
+        image: string | null;
+        highlightText?: string;
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'eventsSection';
+        title?: BlockContent;
+        description?: BlockContent;
+        events: Array<{
+          _id: string;
+          title: string | null;
+          slug: Slug | null;
+          date: string | null;
+          description: BlockContent | null;
+          image: {
+            asset?: {
+              _ref: string;
+              _type: 'reference';
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+            };
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: 'image';
+          } | null;
+          location: string | null;
+        }> | null;
+        showUpcoming?: boolean;
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'gallerySection';
+        title?: BlockContent;
+        description?: BlockContent;
+        images: Array<
+          | {
+              _key: string;
+              _type: 'reference';
+              _id: string;
+              title: string | null;
+              image: {
+                asset?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+                };
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                _type: 'image';
+              } | null;
+              caption: string | null;
+              category: 'anvaya' | 'general' | 'vilokana' | null;
+              tags: Array<string> | null;
+            }
+          | {
+              _key: string;
+              _type: 'image';
+              asset: string | null;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt: string | null;
+              caption: string | null;
+            }
+        > | null;
+        layout?: 'carousel' | 'grid' | 'masonry';
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'hero';
+        title?: BlockContent;
+        description?: BlockContent;
+        cta: {
+          _type: 'internalLink';
+          reference?:
+            | {
+                _ref: string;
+                _type: 'reference';
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: 'home';
+              }
+            | {
+                _ref: string;
+                _type: 'reference';
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: 'page';
+              };
+          title?: string;
+        } | null;
+        media:
+          | {
+              type?: 'image' | 'video';
               image: string | null;
               video?: {
                 asset?: {
@@ -555,74 +1002,261 @@ export type PAGE_QUERYResult = {
       }
     | {
         _key: string;
-        _type: 'hero';
-        title: BlockContent;
+        _type: 'programsSection';
+        title?: BlockContent;
         description?: BlockContent;
-        ctas: Array<{
-          _key: string;
-          _type: 'link';
-          linkType: 'external' | 'internal';
-          variant?: 'outlined' | 'solid' | 'text';
-          color?: 'accent' | 'neutral' | 'primary' | 'secondary';
-          size?: 'large' | 'medium' | 'small';
-          internalLink?: InternalLink;
-          externalLink?: ExternalLink;
-          href: string | null;
-          label: string | null;
-        }> | null;
-        media:
-          | {
-              type: 'image' | 'video';
-              image: string | null;
-              video?: {
-                asset?: {
-                  _ref: string;
-                  _type: 'reference';
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
-                };
-                media?: unknown;
-                _type: 'file';
-              };
-            }
-          | {
-              image: string | null;
+        programs: Array<{
+          _id: string;
+          title: string | null;
+          slug: Slug | null;
+          description: BlockContent | null;
+          image: {
+            asset?: {
+              _ref: string;
+              _type: 'reference';
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
             };
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: 'image';
+          } | null;
+          highlights: Array<string> | null;
+          outcomes: Array<string> | null;
+          category: 'camp' | 'initiative' | 'workshop' | null;
+          organization: 'anvaya' | 'vilokana' | null;
+        }> | null;
+        showAll?: boolean;
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'statsSection';
+        title?: BlockContent;
+        stats?: Array<{
+          value?: string;
+          label?: string;
+          suffix?: string;
+          _key: string;
+        }>;
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'teamSection';
+        title?: BlockContent;
+        description?: BlockContent;
+        members: Array<{
+          _id: string;
+          name: string | null;
+          role: string | null;
+          image: {
+            asset?: {
+              _ref: string;
+              _type: 'reference';
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+            };
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: 'image';
+          } | null;
+          bio: BlockContent | null;
+          organization: 'anvaya' | 'both' | 'vilokana' | null;
+        }> | null;
+        layout?: 'grid' | 'list';
         theme?: Theme;
       }
   > | null;
 } | null;
 // Variable: HOME_QUERY
-// Query: *[_type == "home"][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  }}  }
+// Query: *[_type == "home"][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    cta{      ...,    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "contentSection" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    }  },  _type == "teamSection" => {    ...,    "members": members[]->{      _id,      name,      role,      image,      bio,      organization    }  },  _type == "programsSection" => {    ...,    "programs": programs[]->{      _id,      title,      slug,      description,      image,      highlights,      outcomes,      category,      organization    }  },  _type == "gallerySection" => {    ...,    "images": images[]{      _key,      _type,      _type == "reference" => @->{        _id,        title,        image,        caption,        category,        tags      },      _type == "image" => {        ...,        "asset": asset->url,        alt,        caption      }    }  },  _type == "eventsSection" => {    ...,    "events": events[]->{      _id,      title,      slug,      date,      description,      image,      location    }  },  _type == "donateSection" => {    ...,    "image": image.asset->url,    cta{      ...,      "reference": reference->{        _type,        "slug": slug      }    }  },  _type == "statsSection" => {    ...  }}  }
 export type HOME_QUERYResult = {
   _id: string;
   _type: 'home';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title: string;
+  title?: string;
   sections: Array<
+    | {
+        _key: string;
+        _type: 'contentSection';
+        overline?: string;
+        title?: BlockContent;
+        content?: BlockContent;
+        media:
+          | {
+              type?: 'image' | 'none' | 'video';
+              image: string | null;
+              video?: {
+                asset?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+                };
+                media?: unknown;
+                _type: 'file';
+              };
+            }
+          | {
+              image: string | null;
+            };
+        layout?: 'centered' | 'text-left' | 'text-right';
+        theme?: Theme;
+      }
     | {
         _key: string;
         _type: 'cta';
         overline?: string;
-        title: BlockContent;
+        title?: BlockContent;
         description?: BlockContent;
-        ctas: Array<{
-          _key: string;
-          _type: 'link';
-          linkType: 'external' | 'internal';
-          variant?: 'outlined' | 'solid' | 'text';
-          color?: 'accent' | 'neutral' | 'primary' | 'secondary';
-          size?: 'large' | 'medium' | 'small';
-          internalLink?: InternalLink;
-          externalLink?: ExternalLink;
-          href: string | null;
-          label: string | null;
-        }> | null;
+        cta1?: Array<
+          {
+            _key: string;
+          } & InternalLink
+        >;
         media:
           | {
-              type: 'image' | 'video';
+              type?: 'image' | 'video';
+              image: string | null;
+              video?: {
+                asset?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+                };
+                media?: unknown;
+                _type: 'file';
+              };
+            }
+          | {
+              image: string | null;
+            };
+        theme?: Theme;
+        ctas: null;
+      }
+    | {
+        _key: string;
+        _type: 'donateSection';
+        title?: BlockContent;
+        description?: BlockContent;
+        cta: {
+          _type: 'internalLink';
+          reference:
+            | {
+                _type: 'home';
+                slug: null;
+              }
+            | {
+                _type: 'page';
+                slug: Slug | null;
+              }
+            | null;
+          title?: string;
+        } | null;
+        image: string | null;
+        highlightText?: string;
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'eventsSection';
+        title?: BlockContent;
+        description?: BlockContent;
+        events: Array<{
+          _id: string;
+          title: string | null;
+          slug: Slug | null;
+          date: string | null;
+          description: BlockContent | null;
+          image: {
+            asset?: {
+              _ref: string;
+              _type: 'reference';
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+            };
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: 'image';
+          } | null;
+          location: string | null;
+        }> | null;
+        showUpcoming?: boolean;
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'gallerySection';
+        title?: BlockContent;
+        description?: BlockContent;
+        images: Array<
+          | {
+              _key: string;
+              _type: 'reference';
+              _id: string;
+              title: string | null;
+              image: {
+                asset?: {
+                  _ref: string;
+                  _type: 'reference';
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+                };
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                _type: 'image';
+              } | null;
+              caption: string | null;
+              category: 'anvaya' | 'general' | 'vilokana' | null;
+              tags: Array<string> | null;
+            }
+          | {
+              _key: string;
+              _type: 'image';
+              asset: string | null;
+              media?: unknown;
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt: string | null;
+              caption: string | null;
+            }
+        > | null;
+        layout?: 'carousel' | 'grid' | 'masonry';
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'hero';
+        title?: BlockContent;
+        description?: BlockContent;
+        cta: {
+          _type: 'internalLink';
+          reference?:
+            | {
+                _ref: string;
+                _type: 'reference';
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: 'home';
+              }
+            | {
+                _ref: string;
+                _type: 'reference';
+                _weak?: boolean;
+                [internalGroqTypeReferenceTo]?: 'page';
+              };
+          title?: string;
+        } | null;
+        media:
+          | {
+              type?: 'image' | 'video';
               image: string | null;
               video?: {
                 asset?: {
@@ -642,39 +1276,71 @@ export type HOME_QUERYResult = {
       }
     | {
         _key: string;
-        _type: 'hero';
-        title: BlockContent;
+        _type: 'programsSection';
+        title?: BlockContent;
         description?: BlockContent;
-        ctas: Array<{
-          _key: string;
-          _type: 'link';
-          linkType: 'external' | 'internal';
-          variant?: 'outlined' | 'solid' | 'text';
-          color?: 'accent' | 'neutral' | 'primary' | 'secondary';
-          size?: 'large' | 'medium' | 'small';
-          internalLink?: InternalLink;
-          externalLink?: ExternalLink;
-          href: string | null;
-          label: string | null;
-        }> | null;
-        media:
-          | {
-              type: 'image' | 'video';
-              image: string | null;
-              video?: {
-                asset?: {
-                  _ref: string;
-                  _type: 'reference';
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
-                };
-                media?: unknown;
-                _type: 'file';
-              };
-            }
-          | {
-              image: string | null;
+        programs: Array<{
+          _id: string;
+          title: string | null;
+          slug: Slug | null;
+          description: BlockContent | null;
+          image: {
+            asset?: {
+              _ref: string;
+              _type: 'reference';
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
             };
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: 'image';
+          } | null;
+          highlights: Array<string> | null;
+          outcomes: Array<string> | null;
+          category: 'camp' | 'initiative' | 'workshop' | null;
+          organization: 'anvaya' | 'vilokana' | null;
+        }> | null;
+        showAll?: boolean;
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'statsSection';
+        title?: BlockContent;
+        stats?: Array<{
+          value?: string;
+          label?: string;
+          suffix?: string;
+          _key: string;
+        }>;
+        theme?: Theme;
+      }
+    | {
+        _key: string;
+        _type: 'teamSection';
+        title?: BlockContent;
+        description?: BlockContent;
+        members: Array<{
+          _id: string;
+          name: string | null;
+          role: string | null;
+          image: {
+            asset?: {
+              _ref: string;
+              _type: 'reference';
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+            };
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: 'image';
+          } | null;
+          bio: BlockContent | null;
+          organization: 'anvaya' | 'both' | 'vilokana' | null;
+        }> | null;
+        layout?: 'grid' | 'list';
         theme?: Theme;
       }
   > | null;
@@ -686,9 +1352,9 @@ export type HOME_QUERYResult = {
 import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
-    '\n  *[_type == "settings"][0] {\n    header {\n      links[] { ..., }\n    },\n    footer {\n      links[] { ..., },\n      socialLinks[] { url, title, openInNewTab }\n    }\n  }\n': SETTINGS_QUERYResult;
-    '\nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  }\n}': RefinedSectionsFragmentResult;
-    '\n  *[_type == "page" && slug.current == $slug][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  }\n}\n  }\n': PAGE_QUERYResult;
-    '\n  *[_type == "home"][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  }\n}\n  }\n': HOME_QUERYResult;
+    '\n  *[_type == "settings"][0] {\n    header {\n      links[] { ..., }\n    },\n    footer {\n      links[] { ..., }\n    }\n  }\n': SETTINGS_QUERYResult;
+    '\nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    cta{\n      ...,\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "contentSection" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    }\n  },\n  _type == "teamSection" => {\n    ...,\n    "members": members[]->{\n      _id,\n      name,\n      role,\n      image,\n      bio,\n      organization\n    }\n  },\n  _type == "programsSection" => {\n    ...,\n    "programs": programs[]->{\n      _id,\n      title,\n      slug,\n      description,\n      image,\n      highlights,\n      outcomes,\n      category,\n      organization\n    }\n  },\n  _type == "gallerySection" => {\n    ...,\n    "images": images[]{\n      _key,\n      _type,\n      _type == "reference" => @->{\n        _id,\n        title,\n        image,\n        caption,\n        category,\n        tags\n      },\n      _type == "image" => {\n        ...,\n        "asset": asset->url,\n        alt,\n        caption\n      }\n    }\n  },\n  _type == "eventsSection" => {\n    ...,\n    "events": events[]->{\n      _id,\n      title,\n      slug,\n      date,\n      description,\n      image,\n      location\n    }\n  },\n  _type == "donateSection" => {\n    ...,\n    "image": image.asset->url,\n    cta{\n      ...,\n      "reference": reference->{\n        _type,\n        "slug": slug\n      }\n    }\n  },\n  _type == "statsSection" => {\n    ...\n  }\n}': RefinedSectionsFragmentResult;
+    '\n  *[_type == "page" && slug.current == $slug][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    cta{\n      ...,\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "contentSection" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    }\n  },\n  _type == "teamSection" => {\n    ...,\n    "members": members[]->{\n      _id,\n      name,\n      role,\n      image,\n      bio,\n      organization\n    }\n  },\n  _type == "programsSection" => {\n    ...,\n    "programs": programs[]->{\n      _id,\n      title,\n      slug,\n      description,\n      image,\n      highlights,\n      outcomes,\n      category,\n      organization\n    }\n  },\n  _type == "gallerySection" => {\n    ...,\n    "images": images[]{\n      _key,\n      _type,\n      _type == "reference" => @->{\n        _id,\n        title,\n        image,\n        caption,\n        category,\n        tags\n      },\n      _type == "image" => {\n        ...,\n        "asset": asset->url,\n        alt,\n        caption\n      }\n    }\n  },\n  _type == "eventsSection" => {\n    ...,\n    "events": events[]->{\n      _id,\n      title,\n      slug,\n      date,\n      description,\n      image,\n      location\n    }\n  },\n  _type == "donateSection" => {\n    ...,\n    "image": image.asset->url,\n    cta{\n      ...,\n      "reference": reference->{\n        _type,\n        "slug": slug\n      }\n    }\n  },\n  _type == "statsSection" => {\n    ...\n  }\n}\n  }\n': PAGE_QUERYResult;
+    '\n  *[_type == "home"][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    cta{\n      ...,\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "contentSection" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    }\n  },\n  _type == "teamSection" => {\n    ...,\n    "members": members[]->{\n      _id,\n      name,\n      role,\n      image,\n      bio,\n      organization\n    }\n  },\n  _type == "programsSection" => {\n    ...,\n    "programs": programs[]->{\n      _id,\n      title,\n      slug,\n      description,\n      image,\n      highlights,\n      outcomes,\n      category,\n      organization\n    }\n  },\n  _type == "gallerySection" => {\n    ...,\n    "images": images[]{\n      _key,\n      _type,\n      _type == "reference" => @->{\n        _id,\n        title,\n        image,\n        caption,\n        category,\n        tags\n      },\n      _type == "image" => {\n        ...,\n        "asset": asset->url,\n        alt,\n        caption\n      }\n    }\n  },\n  _type == "eventsSection" => {\n    ...,\n    "events": events[]->{\n      _id,\n      title,\n      slug,\n      date,\n      description,\n      image,\n      location\n    }\n  },\n  _type == "donateSection" => {\n    ...,\n    "image": image.asset->url,\n    cta{\n      ...,\n      "reference": reference->{\n        _type,\n        "slug": slug\n      }\n    }\n  },\n  _type == "statsSection" => {\n    ...\n  }\n}\n  }\n': HOME_QUERYResult;
   }
 }

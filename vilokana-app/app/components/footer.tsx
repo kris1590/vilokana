@@ -1,10 +1,8 @@
-import { ExternalLink, InternalLink } from "@/sanity.types";
-import Link from "next/link";
-
-
+import { InternalLink } from "@/sanity.types";
+import AppLink from "./link";
 
 export default function Footer({ items }: { items: InternalLink[] }) {
-  console.log("items", items);
+
   return (
     <footer className="border-t border-base-300 bg-base-200">
       <div className="container-content section-spacing">
@@ -13,12 +11,12 @@ export default function Footer({ items }: { items: InternalLink[] }) {
             <ul className="flex list-none flex-wrap gap-6 p-0 m-0">
               {items.map((link) => (
                 <li key={link.reference?._ref ?? ""}>
-                  <Link
+                  <AppLink
                     href={`/${link.reference?._ref}`}
                     className="text-base-content/80 hover:text-base-content text-sm no-underline transition-colors"
                   >
                     {link.title ?? ""}
-                  </Link>
+                  </AppLink>
                 </li>
               ))}
             </ul>
