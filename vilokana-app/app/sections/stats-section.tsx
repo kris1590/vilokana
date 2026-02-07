@@ -2,9 +2,7 @@ import { StatsSection } from "@/sanity.types";
 import SectionContainer from "../components/section-container";
 import PortableTextComponent from "../components/portable-text";
 
-type StatsSectionProps = { data: StatsSection };
-
-const StatsSectionComponent = ({ data }: StatsSectionProps) => {
+const StatsSectionComponent = ({ data }: { data: StatsSection }) => {
   const { title, stats } = data;
 
   return (

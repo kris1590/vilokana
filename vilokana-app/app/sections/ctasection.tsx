@@ -17,7 +17,7 @@ const CTASection = ({ data }: CTASectionProps) => {
         {/* Text Content */}
         <div className={`flex-1 ${hasMedia ? "lg:w-1/2" : "w-full"}`}>
           {overline && (
-            <p className="overline !text-primary-content/80">{overline}</p>
+            <p className=" text-primary-content/80">{overline}</p>
           )}
 
           {title && (

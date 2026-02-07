@@ -90,13 +90,11 @@ sections[]{
   _type == "eventsSection" => {
     ...,
     "events": events[]->{
-      _id,
-      title,
-      slug,
-      date,
-      description,
-      image,
-      location
+   ...,
+   event->{
+    ...,
+    "image": image.asset->url
+   }
     }
   },
   _type == "donateSection" => {

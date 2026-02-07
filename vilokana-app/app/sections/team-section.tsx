@@ -3,6 +3,7 @@ import SectionContainer from "../components/section-container";
 import PortableTextComponent from "../components/portable-text";
 import { urlFor } from "@/sanity/lib/image";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { resolveReference } from "@/sanity/lib/helper";
 
 type TeamSectionProps = {
   data: TeamSection & {
@@ -16,8 +17,8 @@ type TeamSectionProps = {
   };
 };
 
-const TeamSectionComponent = ({ data }: TeamSectionProps) => {
-  const { title, description, members, layout = "grid" } = data;
+const TeamSectionComponent = ({ data }: { data: TeamSection }) => {
+  const { title, description, members = [], layout = "grid" } = data;
 
   return (
     <SectionContainer as="section" spacing="lg" className="bg-base-200">
@@ -32,38 +33,41 @@ const TeamSectionComponent = ({ data }: TeamSectionProps) => {
 
       {members && members.length > 0 && (
         <div className={layout === "list" ? "flex flex-col gap-8" : "grid-cards-4"}>
-          {members.map((member) => (
-            <div
-              key={member._id}
-              className={`card bg-base-100 card-hover ${layout === "list" ? "card-side" : ""}`}
-            >
-              {member.image && (
-                <figure className={layout === "list" ? "w-48 shrink-0" : "px-6 pt-6"}>
-                  <img
-                    src={urlFor(member.image).width(400).height(400).url()}
-                    alt={member.name}
-                    className={
-                      layout === "list"
-                        ? "img-cover"
-                        : "rounded-full w-32 h-32 object-cover mx-auto"
-                    }
-                  />
-                </figure>
-              )}
-              <div className="card-body items-center text-center">
-                <h3 className="card-title font-serif">{member.name}</h3>
-                {member.role && (
-                  <p className="text-primary text-sm font-medium">{member.role}</p>
+          {members.map((member) => {
+            let member1 = resolveReference(member);
+            return (
+              <div
+                key={member1._id}
+                className={`card bg-base-100 card-hover ${layout === "list" ? "card-side" : ""}`}
+              >
+                {member1.image && (
+                  <figure className={layout === "list" ? "w-48 shrink-0" : "px-6 pt-6"}>
+                    <img
+                      src={urlFor(member1.image).width(400).height(400).url()}
+                      alt={member1.name}
+                      className={
+                        layout === "list"
+                          ? "img-cover"
+                          : "rounded-full w-32 h-32 object-cover mx-auto"
+                      }
+                    />
+                  </figure>
                 )}
-                {member.bio && (
-                  <PortableTextComponent
-                    value={member.bio as any}
-                    className="prose prose-sm mt-2"
-                  />
-                )}
+                <div className="card-body items-center text-center">
+                  <h3 className="card-title font-serif">{member1.name}</h3>
+                  {member1.role && (
+                    <p className="text-primary text-sm font-medium">{member1.role}</p>
+                  )}
+                  {member1.bio && (
+                    <PortableTextComponent
+                      value={member1.bio as any}
+                      className="prose prose-sm mt-2"
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </SectionContainer>

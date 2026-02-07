@@ -1,6 +1,6 @@
 import { fetchSanityData } from "@/sanity/lib/live";
 import { HOME_QUERY } from "@/sanity/lib/queries";
-import { HOME_QUERYResult } from "@/sanity.types";
+import { HOME_QUERYResult, Sections } from "@/sanity.types";
 import SectionsMapper, { type SectionItem } from "../sectionsmapper";
 
 export default async function Home() {
@@ -19,7 +19,7 @@ export default async function Home() {
     <>
       <main>
         <SectionsMapper
-          data={result.sections as unknown as SectionItem[] | undefined}
+          data={result.sections as Sections}
         />
       </main>
     </>

@@ -2,22 +2,11 @@ import { EventsSection } from "@/sanity.types";
 import SectionContainer from "../components/section-container";
 import PortableTextComponent from "../components/portable-text";
 import { urlFor } from "@/sanity/lib/image";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { resolveReference } from "@/sanity/lib/helper";
 
-type EventsSectionProps = {
-  data: EventsSection & {
-    events?: Array<{
-      _id: string;
-      title: string;
-      date?: string;
-      description?: unknown;
-      image?: SanityImageSource;
-      location?: string;
-    }>;
-  };
-};
 
-const EventsSectionComponent = ({ data }: EventsSectionProps) => {
+
+const EventsSectionComponent = ({ data }: { data: EventsSection }) => {
   const { title, description, events } = data;
 
   const formatDate = (dateString?: string) => {
@@ -45,11 +34,12 @@ const EventsSectionComponent = ({ data }: EventsSectionProps) => {
       {events && events.length > 0 && (
         <div className="space-y-6">
           {events.map((event) => {
-            const dateInfo = formatDate(event.date);
+            let event1 = resolveReference(event);
+            const dateInfo = formatDate(event1.date);
 
             return (
               <div
-                key={event._id}
+                key={event1._id}
                 className="card card-side bg-base-100 card-hover card-bordered overflow-hidden"
               >
                 {/* Date Badge */}
@@ -62,11 +52,11 @@ const EventsSectionComponent = ({ data }: EventsSectionProps) => {
                 )}
 
                 {/* Image */}
-                {event.image && (
+                {event1.image && (
                   <figure className="w-48 shrink-0 hidden md:block">
                     <img
-                      src={urlFor(event.image).width(400).height(300).url()}
-                      alt={event.title}
+                      src={urlFor(event1.image).width(400).height(300).url()}
+                      alt={event1.title}
                       className="img-cover"
                     />
                   </figure>
@@ -74,7 +64,7 @@ const EventsSectionComponent = ({ data }: EventsSectionProps) => {
 
                 {/* Content */}
                 <div className="card-body">
-                  <h3 className="card-title font-serif">{event.title}</h3>
+                  <h3 className="card-title font-serif">{event1.title}</h3>
 
                   <div className="flex flex-wrap gap-4 text-sm text-subtle">
                     {dateInfo && (
@@ -85,20 +75,20 @@ const EventsSectionComponent = ({ data }: EventsSectionProps) => {
                         {dateInfo.time}
                       </span>
                     )}
-                    {event.location && (
+                    {event1.location && (
                       <span className="flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                        {event.location}
+                        {event1.location}
                       </span>
                     )}
                   </div>
 
-                  {event.description && (
+                  {event1.description && (
                     <PortableTextComponent
-                      value={event.description as any}
+                      value={event1.description as any}
                       className="prose prose-sm line-clamp-2 mt-2"
                     />
                   )}

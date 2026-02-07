@@ -5,45 +5,18 @@ import { urlFor } from "@/sanity/lib/image";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import AppLink from "../components/link";
 
-type DonateSectionProps = {
-  data: DonateSection & {
-    cta?: {
-      title?: string;
-      reference?: {
-        slug?: { current: string };
-        _type: string;
-      };
-    };
-  };
-};
 
-const DonateSectionComponent = ({ data }: DonateSectionProps) => {
+const DonateSectionComponent = ({ data }: { data: DonateSection }) => {
   const { title, description, cta, image, highlightText } = data;
 
   const getCtaHref = () => {
     if (!cta?.reference) return "#";
-    if (cta.reference._type === "home") return "/";
-    return `/${cta.reference.slug?.current || ""}`;
+    return `/${cta.reference._ref || ""}`;
   };
 
   return (
     <SectionContainer as="section" spacing="lg" className="relative">
-      {/* Background Image */}
-      {image && (
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${urlFor(image as SanityImageSource).url()})` }}
-        >
-          <div className="absolute inset-0 bg-primary/90" />
-        </div>
-      )}
-
-      {/* Content */}
-      <div
-        className={`relative z-10 text-center max-w-3xl mx-auto ${
-          image ? "text-primary-content" : "bg-primary text-primary-content rounded-2xl p-12"
-        }`}
-      >
+      <div className="relative z-10 text-center max-w-3xl mx-auto bg-primary text-primary-content rounded-2xl p-12">
         {highlightText && (
           <span className="overline inline-block px-4 py-2 bg-white/20 rounded-full !text-primary-content !mb-4">
             {highlightText}

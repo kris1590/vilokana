@@ -8,6 +8,7 @@ import {
   EventsSection,
   DonateSection,
   StatsSection,
+  Sections,
 } from "@/sanity.types";
 import HeroSection from "./sections/herosection";
 import CTASection from "./sections/ctasection";
@@ -31,7 +32,7 @@ export type SectionItem =
   | ({ _key: string } & DonateSection)
   | ({ _key: string } & StatsSection);
 
-const SectionsMapper = ({ data }: { data?: SectionItem[] }) => {
+const SectionsMapper = ({ data }: { data?: Sections }) => {
   return data?.map((section, index) => {
     switch (section._type) {
       case "hero":
@@ -41,15 +42,15 @@ const SectionsMapper = ({ data }: { data?: SectionItem[] }) => {
       case "contentSection":
         return <ContentSectionComponent key={index} data={section} />;
       case "teamSection":
-        return <TeamSectionComponent key={index} data={section as any} />;
+        return <TeamSectionComponent key={index} data={section} />;
       case "programsSection":
-        return <ProgramsSectionComponent key={index} data={section as any} />;
+        return <ProgramsSectionComponent key={index} data={section} />;
       case "gallerySection":
-        return <GallerySectionComponent key={index} data={section as any} />;
+        return <GallerySectionComponent key={index} data={section} />;
       case "eventsSection":
-        return <EventsSectionComponent key={index} data={section as any} />;
+        return <EventsSectionComponent key={index} data={section} />;
       case "donateSection":
-        return <DonateSectionComponent key={index} data={section as any} />;
+        return <DonateSectionComponent key={index} data={section} />;
       case "statsSection":
         return <StatsSectionComponent key={index} data={section} />;
       default:

@@ -4,27 +4,12 @@ import PortableTextComponent from "../components/portable-text";
 import { urlFor } from "@/sanity/lib/image";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
-type GalleryImage = {
-  _key?: string;
-  _id?: string;
-  _type: string;
-  image?: SanityImageSource;
-  asset?: unknown;
-  alt?: string;
-  caption?: string;
-  title?: string;
-};
 
-type GallerySectionProps = {
-  data: GallerySection & {
-    images?: GalleryImage[];
-  };
-};
 
-const GallerySectionComponent = ({ data }: GallerySectionProps) => {
+const GallerySectionComponent = ({ data }: { data: GallerySection }) => {
   const { title, description, images, layout = "grid" } = data;
 
-  const getImageUrl = (item: GalleryImage) => {
+  const getImageUrl = (item: any) => {
     if (item.image) {
       return urlFor(item.image as SanityImageSource).width(800).height(600).url();
     }
@@ -34,13 +19,7 @@ const GallerySectionComponent = ({ data }: GallerySectionProps) => {
     return "";
   };
 
-  const getImageAlt = (item: GalleryImage) => {
-    return item.alt || item.title || item.caption || "";
-  };
 
-  const getImageCaption = (item: GalleryImage) => {
-    return item.caption || item.title || "";
-  };
 
   const getLayoutClass = () => {
     switch (layout) {
@@ -72,7 +51,7 @@ const GallerySectionComponent = ({ data }: GallerySectionProps) => {
 
             return (
               <div
-                key={item._key || item._id || index}
+                key={item._key || index}
                 className={
                   layout === "carousel"
                     ? "carousel-item"
@@ -84,18 +63,17 @@ const GallerySectionComponent = ({ data }: GallerySectionProps) => {
                 <figure className="group relative img-rounded card-hover">
                   <img
                     src={imageUrl}
-                    alt={getImageAlt(item)}
-                    className={`w-full object-cover img-hover-zoom ${
-                      layout === "carousel"
-                        ? "h-64 w-80"
-                        : layout === "masonry"
-                          ? "w-full"
-                          : "aspect-square"
-                    }`}
+                    alt={item.alt || ""}
+                    className={`w-full object-cover img-hover-zoom ${layout === "carousel"
+                      ? "h-64 w-80"
+                      : layout === "masonry"
+                        ? "w-full"
+                        : "aspect-square"
+                      }`}
                   />
-                  {getImageCaption(item) && (
+                  {item.caption && (
                     <figcaption className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/70 to-transparent p-4 text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                      {getImageCaption(item)}
+                      {item.caption}
                     </figcaption>
                   )}
                 </figure>
