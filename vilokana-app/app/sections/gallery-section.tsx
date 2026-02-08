@@ -33,7 +33,7 @@ const GallerySectionComponent = ({ data }: { data: GallerySection }) => {
   };
 
   return (
-    <SectionContainer as="section" spacing="lg" className="bg-base-200">
+    <SectionContainer as="section" spacing="lg" width="wide" className="bg-base-200">
       <div className="section-header">
         {title && (
           <PortableTextComponent value={title} className="prose prose-lg max-w-none mb-4" />

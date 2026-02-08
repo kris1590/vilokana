@@ -21,7 +21,7 @@ const TeamSectionComponent = ({ data }: { data: TeamSection }) => {
   const { title, description, members = [], layout = "grid" } = data;
 
   return (
-    <SectionContainer as="section" spacing="lg" className="bg-base-200">
+    <SectionContainer as="section" spacing="lg" width="wide" className="bg-base-200">
       <div className="section-header">
         {title && (
           <PortableTextComponent value={title} className="prose prose-lg max-w-none mb-4" />
@@ -54,7 +54,7 @@ const TeamSectionComponent = ({ data }: { data: TeamSection }) => {
                   </figure>
                 )}
                 <div className="card-body items-center text-center">
-                  <h3 className="card-title font-serif">{member1.name}</h3>
+                  <h3 className="card-title font-serif text-base md:text-lg">{member1.name}</h3>
                   {member1.role && (
                     <p className="text-primary text-sm font-medium">{member1.role}</p>
                   )}

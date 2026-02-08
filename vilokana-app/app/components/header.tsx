@@ -9,13 +9,13 @@ export default function Header({ items }: { items: InternalLink[] }) {
       <div className="navbar container-content">
         {/* NAVBAR START — Logo */}
         <div className="navbar-start">
-          <AppLink href="/" className="btn btn-ghost normal-case text-xl gap-2">
-            <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-primary-content font-serif font-bold">
+          <AppLink href="/" className="btn btn-ghost normal-case text-lg md:text-xl gap-2">
+            <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-primary flex items-center justify-center">
+              <span className="text-primary-content font-serif font-bold text-sm md:text-base">
                 V
               </span>
             </div>
-            <span className="font-serif font-semibold text-primary">
+            <span className="font-serif font-semibold text-primary text-base md:text-lg">
               Vilokana
             </span>
           </AppLink>
@@ -42,7 +42,7 @@ export default function Header({ items }: { items: InternalLink[] }) {
           {/* Desktop CTA */}
           <div className="hidden lg:flex">
             <AppLink href="/donate" className="btn btn-primary btn-sm px-6">
-              Donate
+              Contact
             </AppLink>
           </div>
 

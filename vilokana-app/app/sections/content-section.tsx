@@ -18,11 +18,11 @@ const ContentSectionComponent = ({ data }: ContentSectionProps) => {
       : "split-content";
 
   return (
-    <SectionContainer as="section" spacing="lg" className="bg-base-100">
+    <SectionContainer as="section" spacing="lg" className="bg-base-100 ">
       <div className={layoutClass}>
         {/* Text Content */}
         <div className={`flex-1 ${hasMedia ? "lg:w-1/2" : "w-full"}`}>
-          {overline && <p className="overline">{overline}</p>}
+          {overline && <p className="text-primary text-4xl">{overline}</p>}
 
           {title && (
             <PortableTextComponent value={title} className="prose prose-lg max-w-none mb-6" />

@@ -15,7 +15,7 @@ const DonateSectionComponent = ({ data }: { data: DonateSection }) => {
   };
 
   return (
-    <SectionContainer as="section" spacing="lg" className="relative">
+    <SectionContainer as="section" spacing="lg" width="narrow" className="relative">
       <div className="relative z-10 text-center max-w-3xl mx-auto bg-primary text-primary-content rounded-2xl p-12">
         {highlightText && (
           <span className="overline inline-block px-4 py-2 bg-white/20 rounded-full !text-primary-content !mb-4">

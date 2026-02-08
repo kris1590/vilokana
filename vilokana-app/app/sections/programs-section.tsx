@@ -53,7 +53,7 @@ const ProgramsSectionComponent = ({ data }: { data: ProgramsSection }) => {
                 )}
                 <div className="card-body">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="card-title font-serif text-lg">{program1.title}</h3>
+                    <h3 className="card-title font-serif text-base md:text-lg">{program1.title}</h3>
                     {program1.category && (
                       <span className={`badge ${getCategoryBadgeColor(program1.category)} badge-sm`}>
                         {program1.category}

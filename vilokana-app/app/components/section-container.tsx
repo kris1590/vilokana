@@ -1,7 +1,7 @@
 import React from "react";
 
 type SectionSpacing = "default" | "sm" | "lg";
-type ContainerWidth = "default" | "narrow";
+type ContainerWidth = "narrow" | "default" | "wide" | "full";
 
 export interface SectionContainerProps
   extends React.HTMLAttributes<HTMLElement> {
@@ -19,8 +19,10 @@ const spacingClasses: Record<SectionSpacing, string> = {
 };
 
 const widthClasses: Record<ContainerWidth, string> = {
-  default: "container-content",
-  narrow: "container-content container-narrow",
+  narrow: "container-base container-narrow",
+  default: "container-base container-default",
+  wide: "container-base container-wide",
+  full: "container-full",
 };
 
 const SectionContainer = React.forwardRef<HTMLElement, SectionContainerProps>(
@@ -40,7 +42,7 @@ const SectionContainer = React.forwardRef<HTMLElement, SectionContainerProps>(
       className={`${spacingClasses[spacing]} ${className}`.trim()}
       {...props}
     >
-      <div className={`w-full ${widthClasses[width]}`}>{children}</div>
+      <div className={widthClasses[width]}>{children}</div>
     </Component>
   )
 );

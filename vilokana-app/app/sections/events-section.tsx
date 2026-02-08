@@ -44,9 +44,9 @@ const EventsSectionComponent = ({ data }: { data: EventsSection }) => {
               >
                 {/* Date Badge */}
                 {dateInfo && (
-                  <div className="shrink-0 w-24 bg-primary text-primary-content flex flex-col items-center justify-center p-4">
-                    <span className="text-3xl font-bold">{dateInfo.day}</span>
-                    <span className="text-sm uppercase">{dateInfo.month}</span>
+                  <div className="shrink-0 w-20 md:w-24 bg-primary text-primary-content flex flex-col items-center justify-center p-3 md:p-4">
+                    <span className="text-2xl md:text-3xl font-bold">{dateInfo.day}</span>
+                    <span className="text-xs md:text-sm uppercase">{dateInfo.month}</span>
                     <span className="text-xs opacity-80">{dateInfo.year}</span>
                   </div>
                 )}
@@ -64,7 +64,7 @@ const EventsSectionComponent = ({ data }: { data: EventsSection }) => {
 
                 {/* Content */}
                 <div className="card-body">
-                  <h3 className="card-title font-serif">{event1.title}</h3>
+                  <h3 className="card-title font-serif text-base md:text-lg">{event1.title}</h3>
 
                   <div className="flex flex-wrap gap-4 text-sm text-subtle">
                     {dateInfo && (

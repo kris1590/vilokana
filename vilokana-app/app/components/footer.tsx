@@ -12,10 +12,10 @@ export default function Footer({ items }: { items: InternalLink[] }) {
           {/* Brand & Mission */}
           <div className="lg:col-span-2">
             <AppLink href="/" className="flex items-center gap-2 no-underline mb-4">
-              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-primary-content font-serif text-lg font-bold">V</span>
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-primary flex items-center justify-center">
+                <span className="text-primary-content font-serif text-base md:text-lg font-bold">V</span>
               </div>
-              <span className="font-serif text-xl font-semibold text-neutral-content">
+              <span className="font-serif text-lg md:text-xl font-semibold text-neutral-content">
                 Vilokana
               </span>
             </AppLink>
@@ -74,7 +74,7 @@ export default function Footer({ items }: { items: InternalLink[] }) {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-serif text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="font-serif text-base md:text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="list-none p-0 m-0 space-y-3">
               {items.map((link) => (
                 <li key={link.reference?._ref ?? ""}>
@@ -91,7 +91,7 @@ export default function Footer({ items }: { items: InternalLink[] }) {
 
           {/* Contact Info */}
           <div>
-            <h3 className="font-serif text-lg font-semibold mb-4">Contact Us</h3>
+            <h3 className="font-serif text-base md:text-lg font-semibold mb-4">Contact Us</h3>
             <ul className="list-none p-0 m-0 space-y-3 text-sm text-neutral-content/70">
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 mt-0.5 shrink-0 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
