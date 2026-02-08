@@ -1,4 +1,4 @@
-import { ImageIcon } from "@sanity/icons";
+import { ImageIcon, PlayIcon } from "@sanity/icons";
 import { defineArrayMember, defineType } from "sanity";
 
 export const blockContentType = defineType({
@@ -68,6 +68,32 @@ export const blockContentType = defineType({
           name: "alt",
           type: "string",
           title: "Alternative Text",
+        },
+        {
+          name: "caption",
+          type: "string",
+          title: "Caption",
+        },
+      ],
+    }),
+    defineArrayMember({
+      title: "Video",
+      name: "video",
+      type: "file",
+      icon: PlayIcon,
+      options: {
+        accept: "video/mp4,video/webm,video/quicktime",
+      },
+      fields: [
+        {
+          name: "title",
+          type: "string",
+          title: "Video Title",
+        },
+        {
+          name: "caption",
+          type: "string",
+          title: "Caption",
         },
       ],
     }),

@@ -1,7 +1,12 @@
 import { InternalLink } from "@/sanity.types";
+import { ExpandedReference, getLinkHref } from "@/sanity/lib/helper";
 import AppLink from "./link";
 
-export default function Footer({ items }: { items: InternalLink[] }) {
+type FooterLink = Omit<InternalLink, "reference"> & {
+  reference?: ExpandedReference | null;
+};
+
+export default function Footer({ items }: { items: FooterLink[] }) {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -76,10 +81,10 @@ export default function Footer({ items }: { items: InternalLink[] }) {
           <div>
             <h3 className="font-serif text-base md:text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="list-none p-0 m-0 space-y-3">
-              {items.map((link) => (
-                <li key={link.reference?._ref ?? ""}>
+              {items.map((link, index) => (
+                <li key={link.reference?._type ?? index}>
                   <AppLink
-                    href={`/${link.reference?._ref}`}
+                    href={getLinkHref(link.reference)}
                     className="text-neutral-content/70 hover:text-primary text-sm no-underline transition-colors"
                   >
                     {link.title ?? ""}

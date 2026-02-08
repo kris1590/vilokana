@@ -6,7 +6,13 @@ export const themeType = defineType({
   type: "object",
   fields: [
 
-
+    defineField({
+      name: "disablePadding",
+      title: "Disable Padding",
+      type: "boolean",
+      description: "Disable padding for the section/page",
+      initialValue: false,
+    }),
     defineField({
       name: "backgroundColor",
       title: "Background Color",

@@ -1,9 +1,14 @@
 "use client";
 
 import { InternalLink } from "@/sanity.types";
+import { ExpandedReference, getLinkHref } from "@/sanity/lib/helper";
 import AppLink from "./link";
 
-export default function Header({ items }: { items: InternalLink[] }) {
+type HeaderLink = Omit<InternalLink, "reference"> & {
+  reference?: ExpandedReference | null;
+};
+
+export default function Header({ items }: { items: HeaderLink[] }) {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-base-100/95 border-b border-base-300">
       <div className="navbar container-content">
@@ -24,10 +29,10 @@ export default function Header({ items }: { items: InternalLink[] }) {
         {/* NAVBAR CENTER — Desktop Menu */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1 gap-1">
-            {items.map((link) => (
-              <li key={link.reference?._ref ?? ""}>
+            {items.map((link, index) => (
+              <li key={link.reference?._type ?? index}>
                 <AppLink
-                  href={`/${link.reference?._ref}`}
+                  href={getLinkHref(link.reference)}
                   className="text-sm font-medium text-base-content/70 hover:text-primary"
                 >
                   {link.title}
@@ -73,9 +78,9 @@ export default function Header({ items }: { items: InternalLink[] }) {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-56"
             >
-              {items.map((link) => (
-                <li key={link.reference?._ref ?? ""}>
-                  <AppLink href={`/${link.reference?._ref}`}>
+              {items.map((link, index) => (
+                <li key={link.reference?._type ?? index}>
+                  <AppLink href={getLinkHref(link.reference)}>
                     {link.title}
                   </AppLink>
                 </li>

@@ -1,21 +1,14 @@
 import { DonateSection } from "@/sanity.types";
 import SectionContainer from "../components/section-container";
 import PortableTextComponent from "../components/portable-text";
-import { urlFor } from "@/sanity/lib/image";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { ExpandedReference, getLinkHref } from "@/sanity/lib/helper";
 import AppLink from "../components/link";
 
-
 const DonateSectionComponent = ({ data }: { data: DonateSection }) => {
-  const { title, description, cta, image, highlightText } = data;
-
-  const getCtaHref = () => {
-    if (!cta?.reference) return "#";
-    return `/${cta.reference._ref || ""}`;
-  };
+  const { title, description, cta, highlightText } = data;
 
   return (
-    <SectionContainer as="section" spacing="lg" width="narrow" className="relative">
+    <SectionContainer as="section" spacing="lg" width="narrow" className="relative" disablePadding={data.theme?.disablePadding}>
       <div className="relative z-10 text-center max-w-3xl mx-auto bg-primary text-primary-content rounded-2xl p-12">
         {highlightText && (
           <span className="overline inline-block px-4 py-2 bg-white/20 rounded-full !text-primary-content !mb-4">
@@ -39,7 +32,7 @@ const DonateSectionComponent = ({ data }: { data: DonateSection }) => {
 
         {cta && (
           <AppLink
-            href={getCtaHref()}
+            href={getLinkHref(cta.reference as unknown as ExpandedReference)}
             className="btn btn-lg bg-white text-primary hover:bg-white/90 border-none"
           >
             {cta.title || "Donate Now"}

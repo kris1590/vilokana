@@ -6,7 +6,7 @@ const StatsSectionComponent = ({ data }: { data: StatsSection }) => {
   const { title, stats } = data;
 
   return (
-    <SectionContainer as="section" spacing="lg" className="bg-base-200">
+    <SectionContainer as="section" spacing="lg" className="bg-base-200" disablePadding={data.theme?.disablePadding}>
       {title && (
         <div className="section-header">
           <PortableTextComponent value={title} className="prose prose-lg max-w-none" />

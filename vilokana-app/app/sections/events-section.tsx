@@ -21,7 +21,7 @@ const EventsSectionComponent = ({ data }: { data: EventsSection }) => {
   };
 
   return (
-    <SectionContainer as="section" spacing="lg" className="bg-base-100">
+    <SectionContainer as="section" spacing="lg" className="bg-base-100" disablePadding={data.theme?.disablePadding}>
       <div className="section-header">
         {title && (
           <PortableTextComponent value={title} className="prose prose-lg max-w-none mb-4" />

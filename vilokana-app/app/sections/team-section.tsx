@@ -21,7 +21,7 @@ const TeamSectionComponent = ({ data }: { data: TeamSection }) => {
   const { title, description, members = [], layout = "grid" } = data;
 
   return (
-    <SectionContainer as="section" spacing="lg" width="wide" className="bg-base-200">
+    <SectionContainer as="section" spacing="lg" width="wide" className="bg-base-200" disablePadding={data.theme?.disablePadding}>
       <div className="section-header">
         {title && (
           <PortableTextComponent value={title} className="prose prose-lg max-w-none mb-4" />

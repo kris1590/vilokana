@@ -1,10 +1,20 @@
 import { ProgramsSection } from "@/sanity.types";
 import SectionContainer from "../components/section-container";
 import PortableTextComponent from "../components/portable-text";
-import { urlFor } from "@/sanity/lib/image";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { resolveReference } from "@/sanity/lib/helper";
+import AppLink from "../components/link";
 
+type ProgramCard = {
+  _id: string;
+  title?: string;
+  slug?: { current?: string };
+  shortDescription?: string;
+  category?: string;
+  organization?: string;
+  thumbnail?: {
+    url?: string;
+    alt?: string;
+  };
+};
 
 const ProgramsSectionComponent = ({ data }: { data: ProgramsSection }) => {
   const { title, description, programs } = data;
@@ -23,7 +33,7 @@ const ProgramsSectionComponent = ({ data }: { data: ProgramsSection }) => {
   };
 
   return (
-    <SectionContainer as="section" spacing="lg" className="bg-base-100">
+    <SectionContainer as="section" spacing="lg" className="bg-base-100" disablePadding={data.theme?.disablePadding}>
       <div className="section-header">
         {title && (
           <PortableTextComponent value={title} className="prose prose-lg max-w-none mb-4" />
@@ -35,51 +45,48 @@ const ProgramsSectionComponent = ({ data }: { data: ProgramsSection }) => {
 
       {programs && programs.length > 0 && (
         <div className="grid-cards">
-          {programs.map((program) => {
-            let program1 = resolveReference(program);
+          {(programs as unknown as ProgramCard[]).map((program) => {
+            const programSlug = program.slug?.current;
+            const programUrl = programSlug
+              ? `/vilokana-foundation/${programSlug}`
+              : "#";
+
             return (
-              <div
-                key={program1._id}
-                className="card bg-base-100 card-hover card-bordered"
+              <AppLink
+                key={program._id}
+                href={programUrl}
+                className="card bg-base-100 card-hover card-bordered cursor-pointer transition-transform hover:scale-[1.02] block no-underline"
               >
-                {program1.image && (
+                {program.thumbnail?.url && (
                   <figure>
                     <img
-                      src={urlFor(program1.image).width(600).height(400).url()}
-                      alt={program1.title}
+                      src={program.thumbnail.url}
+                      alt={program.thumbnail.alt || program.title || "Program image"}
                       className="w-full h-48 object-cover"
                     />
                   </figure>
                 )}
                 <div className="card-body">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="card-title font-serif text-base md:text-lg">{program1.title}</h3>
-                    {program1.category && (
-                      <span className={`badge ${getCategoryBadgeColor(program1.category)} badge-sm`}>
-                        {program1.category}
+                    <h3 className="card-title font-serif text-base md:text-lg">
+                      {program.title}
+                    </h3>
+                    {program.category && (
+                      <span
+                        className={`badge ${getCategoryBadgeColor(program.category)} badge-sm`}
+                      >
+                        {program.category}
                       </span>
                     )}
                   </div>
 
-                  {program1.description && (
-                    <PortableTextComponent
-                      value={program1.description as any}
-                      className="prose prose-sm line-clamp-3"
-                    />
-                  )}
-
-                  {program1.highlights && program1.highlights.length > 0 && (
-                    <ul className="mt-4 space-y-1">
-                      {program1.highlights.slice(0, 3).map((highlight, index) => (
-                        <li key={index} className="flex items-start gap-2 text-sm text-muted">
-                          <span className="text-primary mt-1">•</span>
-                          {highlight}
-                        </li>
-                      ))}
-                    </ul>
+                  {program.shortDescription && (
+                    <p className="text-sm text-muted line-clamp-2">
+                      {program.shortDescription}
+                    </p>
                   )}
                 </div>
-              </div>
+              </AppLink>
             );
           })}
         </div>

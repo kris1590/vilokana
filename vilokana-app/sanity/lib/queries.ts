@@ -3,10 +3,22 @@ import { groq } from "next-sanity";
 export const SETTINGS_QUERY = groq`
   *[_type == "settings"][0] {
     header {
-      links[] { ..., }
+      links[] { 
+        ..., 
+        "reference": reference->{
+          _type,
+          "slug": slug.current
+        }
+      }
     },
     footer {
-      links[] { ..., }
+      links[] { 
+        ..., 
+        "reference": reference->{
+          _type,
+          "slug": slug.current
+        }
+      }
     }
   }
 `;
@@ -66,12 +78,13 @@ sections[]{
       _id,
       title,
       slug,
-      description,
-      image,
-      highlights,
-      outcomes,
+      shortDescription,
       category,
-      organization
+      organization,
+      "thumbnail": {
+        "url": thumbnail.asset->url,
+        "alt": thumbnail.alt
+      }
     }
   },
   _type == "gallerySection" => {
@@ -104,7 +117,7 @@ sections[]{
       ...,
       "reference": reference->{
         _type,
-        "slug": slug
+        "slug": slug.current
       }
     }
   },
@@ -124,5 +137,30 @@ export const HOME_QUERY = groq`
   *[_type == "home"][0] {
     ...,
     ${refinedSectionsFragment}
+  }
+`;
+
+export const PROGRAM_DETAIL_QUERY = groq`
+  *[_type == "program" && slug.current == $slug][0] {
+    _id,
+    title,
+    slug,
+    shortDescription,
+    date,
+    description[]{
+      ...,
+      _type == "image" => {
+        ...,
+        "url": asset->url
+      },
+      _type == "video" => {
+        ...,
+        "url": asset->url
+      }
+    },
+    highlights,
+    outcomes,
+    category,
+    organization
   }
 `;

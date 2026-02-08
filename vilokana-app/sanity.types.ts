@@ -146,7 +146,7 @@ export type TeamSection = {
 
 export type ContentSection = {
   _type: 'contentSection';
-  overline?: string;
+  overline?: BlockContent;
   title: BlockContent;
   content: BlockContent;
   media?: {
@@ -294,7 +294,21 @@ export type BlockContent = Array<
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
       alt?: string;
+      caption?: string;
       _type: 'image';
+      _key: string;
+    }
+  | {
+      asset?: {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+      };
+      media?: unknown;
+      title?: string;
+      caption?: string;
+      _type: 'video';
       _key: string;
     }
 >;
@@ -324,6 +338,7 @@ export type Seo = {
 
 export type Theme = {
   _type: 'theme';
+  disablePadding?: boolean;
   backgroundColor?: Color;
   backgroundImage?: {
     asset?: {
@@ -469,9 +484,9 @@ export type Program = {
   _updatedAt: string;
   _rev: string;
   title: string;
-  slug?: Slug;
-  description?: BlockContent;
-  image?: {
+  slug: Slug;
+  shortDescription?: string;
+  thumbnail?: {
     asset?: {
       _ref: string;
       _type: 'reference';
@@ -481,8 +496,11 @@ export type Program = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt?: string;
     _type: 'image';
   };
+  date?: string;
+  description?: BlockContent;
   highlights?: Array<string>;
   outcomes?: Array<string>;
   category?: 'workshop' | 'camp' | 'initiative';
@@ -739,7 +757,7 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: SETTINGS_QUERY
-// Query: *[_type == "settings"][0] {    header {      links[] { ..., }    },    footer {      links[] { ..., }    }  }
+// Query: *[_type == "settings"][0] {    header {      links[] {         ...,         "reference": reference->{          _type,          "slug": slug.current        }      }    },    footer {      links[] {         ...,         "reference": reference->{          _type,          "slug": slug.current        }      }    }  }
 export type SETTINGS_QUERYResult = {
   header: {
     links: Array<{
@@ -747,16 +765,12 @@ export type SETTINGS_QUERYResult = {
       _type: 'internalLink';
       reference:
         | {
-            _ref: string;
-            _type: 'reference';
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: 'home';
+            _type: 'home';
+            slug: null;
           }
         | {
-            _ref: string;
-            _type: 'reference';
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: 'page';
+            _type: 'page';
+            slug: string;
           };
       title?: string;
     }>;
@@ -767,26 +781,22 @@ export type SETTINGS_QUERYResult = {
       _type: 'internalLink';
       reference:
         | {
-            _ref: string;
-            _type: 'reference';
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: 'home';
+            _type: 'home';
+            slug: null;
           }
         | {
-            _ref: string;
-            _type: 'reference';
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: 'page';
+            _type: 'page';
+            slug: string;
           };
       title?: string;
     }>;
   } | null;
 } | null;
 // Variable: refinedSectionsFragment
-// Query: sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    cta{      ...,    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "contentSection" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    }  },  _type == "teamSection" => {    ...,    "members": members[]->{      _id,      name,      role,      image,      bio,      organization    }  },  _type == "programsSection" => {    ...,    "programs": programs[]->{      _id,      title,      slug,      description,      image,      highlights,      outcomes,      category,      organization    }  },  _type == "gallerySection" => {    ...,    "images": images[]{      _key,      _type,      _type == "image" => {        ...,        "asset": asset->url,        alt,        caption      }    }  },  _type == "eventsSection" => {    ...,    "events": events[]->{   ...,   event->{    ...,    "image": image.asset->url   }    }  },  _type == "donateSection" => {    ...,    "image": image.asset->url,    cta{      ...,      "reference": reference->{        _type,        "slug": slug      }    }  },  _type == "statsSection" => {    ...  }}
+// Query: sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    cta{      ...,    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "contentSection" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    }  },  _type == "teamSection" => {    ...,    "members": members[]->{      _id,      name,      role,      image,      bio,      organization    }  },  _type == "programsSection" => {    ...,    "programs": programs[]->{      _id,      title,      slug,      shortDescription,      category,      organization,      "thumbnail": {        "url": thumbnail.asset->url,        "alt": thumbnail.alt      }    }  },  _type == "gallerySection" => {    ...,    "images": images[]{      _key,      _type,      _type == "image" => {        ...,        "asset": asset->url,        alt,        caption      }    }  },  _type == "eventsSection" => {    ...,    "events": events[]->{   ...,   event->{    ...,    "image": image.asset->url   }    }  },  _type == "donateSection" => {    ...,    "image": image.asset->url,    cta{      ...,      "reference": reference->{        _type,        "slug": slug.current      }    }  },  _type == "statsSection" => {    ...  }}
 export type RefinedSectionsFragmentResult = never;
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    cta{      ...,    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "contentSection" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    }  },  _type == "teamSection" => {    ...,    "members": members[]->{      _id,      name,      role,      image,      bio,      organization    }  },  _type == "programsSection" => {    ...,    "programs": programs[]->{      _id,      title,      slug,      description,      image,      highlights,      outcomes,      category,      organization    }  },  _type == "gallerySection" => {    ...,    "images": images[]{      _key,      _type,      _type == "image" => {        ...,        "asset": asset->url,        alt,        caption      }    }  },  _type == "eventsSection" => {    ...,    "events": events[]->{   ...,   event->{    ...,    "image": image.asset->url   }    }  },  _type == "donateSection" => {    ...,    "image": image.asset->url,    cta{      ...,      "reference": reference->{        _type,        "slug": slug      }    }  },  _type == "statsSection" => {    ...  }}  }
+// Query: *[_type == "page" && slug.current == $slug][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    cta{      ...,    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "contentSection" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    }  },  _type == "teamSection" => {    ...,    "members": members[]->{      _id,      name,      role,      image,      bio,      organization    }  },  _type == "programsSection" => {    ...,    "programs": programs[]->{      _id,      title,      slug,      shortDescription,      category,      organization,      "thumbnail": {        "url": thumbnail.asset->url,        "alt": thumbnail.alt      }    }  },  _type == "gallerySection" => {    ...,    "images": images[]{      _key,      _type,      _type == "image" => {        ...,        "asset": asset->url,        alt,        caption      }    }  },  _type == "eventsSection" => {    ...,    "events": events[]->{   ...,   event->{    ...,    "image": image.asset->url   }    }  },  _type == "donateSection" => {    ...,    "image": image.asset->url,    cta{      ...,      "reference": reference->{        _type,        "slug": slug.current      }    }  },  _type == "statsSection" => {    ...  }}  }
 export type PAGE_QUERYResult = {
   _id: string;
   _type: 'page';
@@ -801,7 +811,7 @@ export type PAGE_QUERYResult = {
     | {
         _key: string;
         _type: 'contentSection';
-        overline?: string;
+        overline?: BlockContent;
         title: BlockContent;
         content: BlockContent;
         media:
@@ -871,7 +881,7 @@ export type PAGE_QUERYResult = {
               }
             | {
                 _type: 'page';
-                slug: Slug;
+                slug: string;
               };
           title?: string;
         } | null;
@@ -980,24 +990,14 @@ export type PAGE_QUERYResult = {
         programs: Array<{
           _id: string;
           title: string;
-          slug: Slug | null;
-          description: BlockContent | null;
-          image: {
-            asset?: {
-              _ref: string;
-              _type: 'reference';
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-            };
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            _type: 'image';
-          } | null;
-          highlights: Array<string> | null;
-          outcomes: Array<string> | null;
+          slug: Slug;
+          shortDescription: string | null;
           category: 'camp' | 'initiative' | 'workshop' | null;
           organization: 'anvaya' | 'vilokana' | null;
+          thumbnail: {
+            url: string | null;
+            alt: string | null;
+          };
         }> | null;
         showAll?: boolean;
         theme?: Theme;
@@ -1044,7 +1044,7 @@ export type PAGE_QUERYResult = {
   > | null;
 } | null;
 // Variable: HOME_QUERY
-// Query: *[_type == "home"][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    cta{      ...,    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "contentSection" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    }  },  _type == "teamSection" => {    ...,    "members": members[]->{      _id,      name,      role,      image,      bio,      organization    }  },  _type == "programsSection" => {    ...,    "programs": programs[]->{      _id,      title,      slug,      description,      image,      highlights,      outcomes,      category,      organization    }  },  _type == "gallerySection" => {    ...,    "images": images[]{      _key,      _type,      _type == "image" => {        ...,        "asset": asset->url,        alt,        caption      }    }  },  _type == "eventsSection" => {    ...,    "events": events[]->{   ...,   event->{    ...,    "image": image.asset->url   }    }  },  _type == "donateSection" => {    ...,    "image": image.asset->url,    cta{      ...,      "reference": reference->{        _type,        "slug": slug      }    }  },  _type == "statsSection" => {    ...  }}  }
+// Query: *[_type == "home"][0] {    ...,    sections[]{  ...,  _type == "hero" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    cta{      ...,    }  },  _type == "cta" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    },    "ctas": ctas[]{      ...,      "href": select(        linkType == "external" => externalLink.url,        "/" + internalLink.reference->slug.current      ),      "label": select(        linkType == "external" => externalLink.title,        internalLink.title      )    }  },  _type == "contentSection" => {    ...,    "media": {      ...media,      "image": media.image.asset->url    }  },  _type == "teamSection" => {    ...,    "members": members[]->{      _id,      name,      role,      image,      bio,      organization    }  },  _type == "programsSection" => {    ...,    "programs": programs[]->{      _id,      title,      slug,      shortDescription,      category,      organization,      "thumbnail": {        "url": thumbnail.asset->url,        "alt": thumbnail.alt      }    }  },  _type == "gallerySection" => {    ...,    "images": images[]{      _key,      _type,      _type == "image" => {        ...,        "asset": asset->url,        alt,        caption      }    }  },  _type == "eventsSection" => {    ...,    "events": events[]->{   ...,   event->{    ...,    "image": image.asset->url   }    }  },  _type == "donateSection" => {    ...,    "image": image.asset->url,    cta{      ...,      "reference": reference->{        _type,        "slug": slug.current      }    }  },  _type == "statsSection" => {    ...  }}  }
 export type HOME_QUERYResult = {
   _id: string;
   _type: 'home';
@@ -1056,7 +1056,7 @@ export type HOME_QUERYResult = {
     | {
         _key: string;
         _type: 'contentSection';
-        overline?: string;
+        overline?: BlockContent;
         title: BlockContent;
         content: BlockContent;
         media:
@@ -1126,7 +1126,7 @@ export type HOME_QUERYResult = {
               }
             | {
                 _type: 'page';
-                slug: Slug;
+                slug: string;
               };
           title?: string;
         } | null;
@@ -1235,24 +1235,14 @@ export type HOME_QUERYResult = {
         programs: Array<{
           _id: string;
           title: string;
-          slug: Slug | null;
-          description: BlockContent | null;
-          image: {
-            asset?: {
-              _ref: string;
-              _type: 'reference';
-              _weak?: boolean;
-              [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
-            };
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            _type: 'image';
-          } | null;
-          highlights: Array<string> | null;
-          outcomes: Array<string> | null;
+          slug: Slug;
+          shortDescription: string | null;
           category: 'camp' | 'initiative' | 'workshop' | null;
           organization: 'anvaya' | 'vilokana' | null;
+          thumbnail: {
+            url: string | null;
+            alt: string | null;
+          };
         }> | null;
         showAll?: boolean;
         theme?: Theme;
@@ -1300,14 +1290,93 @@ export type HOME_QUERYResult = {
   seo?: Seo;
   theme?: Theme;
 } | null;
+// Variable: PROGRAM_DETAIL_QUERY
+// Query: *[_type == "program" && slug.current == $slug][0] {    _id,    title,    slug,    shortDescription,    date,    description[]{      ...,      _type == "image" => {        ...,        "url": asset->url      },      _type == "video" => {        ...,        "url": asset->url      }    },    highlights,    outcomes,    category,    organization  }
+export type PROGRAM_DETAIL_QUERYResult = {
+  _id: string;
+  title: string;
+  slug: Slug;
+  shortDescription: string | null;
+  date: string | null;
+  description: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: 'span';
+          _key: string;
+        }>;
+        style?:
+          | 'blockquote'
+          | 'display1'
+          | 'display2'
+          | 'h1'
+          | 'h2'
+          | 'h3'
+          | 'h4'
+          | 'h5'
+          | 'h6'
+          | 'normal';
+        listItem?: 'bullet' | 'number';
+        markDefs?: Array<{
+          href?: string;
+          _type: 'link';
+          _key: string;
+        }>;
+        level?: number;
+        _type: 'block';
+        _key: string;
+      }
+    | {
+        asset?: {
+          _ref: string;
+          _type: 'reference';
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        _type: 'image';
+        _key: string;
+        url: string | null;
+      }
+    | {
+        style?: 'line' | 'space';
+        _type: 'separator';
+        _key: string;
+      }
+    | {
+        asset?: {
+          _ref: string;
+          _type: 'reference';
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: 'sanity.fileAsset';
+        };
+        media?: unknown;
+        title?: string;
+        caption?: string;
+        _type: 'video';
+        _key: string;
+        url: string | null;
+      }
+  > | null;
+  highlights: Array<string> | null;
+  outcomes: Array<string> | null;
+  category: 'camp' | 'initiative' | 'workshop' | null;
+  organization: 'anvaya' | 'vilokana' | null;
+} | null;
 
 // Query TypeMap
 import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
-    '\n  *[_type == "settings"][0] {\n    header {\n      links[] { ..., }\n    },\n    footer {\n      links[] { ..., }\n    }\n  }\n': SETTINGS_QUERYResult;
-    '\nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    cta{\n      ...,\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "contentSection" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    }\n  },\n  _type == "teamSection" => {\n    ...,\n    "members": members[]->{\n      _id,\n      name,\n      role,\n      image,\n      bio,\n      organization\n    }\n  },\n  _type == "programsSection" => {\n    ...,\n    "programs": programs[]->{\n      _id,\n      title,\n      slug,\n      description,\n      image,\n      highlights,\n      outcomes,\n      category,\n      organization\n    }\n  },\n  _type == "gallerySection" => {\n    ...,\n    "images": images[]{\n      _key,\n      _type,\n      _type == "image" => {\n        ...,\n        "asset": asset->url,\n        alt,\n        caption\n      }\n    }\n  },\n  _type == "eventsSection" => {\n    ...,\n    "events": events[]->{\n   ...,\n   event->{\n    ...,\n    "image": image.asset->url\n   }\n    }\n  },\n  _type == "donateSection" => {\n    ...,\n    "image": image.asset->url,\n    cta{\n      ...,\n      "reference": reference->{\n        _type,\n        "slug": slug\n      }\n    }\n  },\n  _type == "statsSection" => {\n    ...\n  }\n}': RefinedSectionsFragmentResult;
-    '\n  *[_type == "page" && slug.current == $slug][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    cta{\n      ...,\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "contentSection" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    }\n  },\n  _type == "teamSection" => {\n    ...,\n    "members": members[]->{\n      _id,\n      name,\n      role,\n      image,\n      bio,\n      organization\n    }\n  },\n  _type == "programsSection" => {\n    ...,\n    "programs": programs[]->{\n      _id,\n      title,\n      slug,\n      description,\n      image,\n      highlights,\n      outcomes,\n      category,\n      organization\n    }\n  },\n  _type == "gallerySection" => {\n    ...,\n    "images": images[]{\n      _key,\n      _type,\n      _type == "image" => {\n        ...,\n        "asset": asset->url,\n        alt,\n        caption\n      }\n    }\n  },\n  _type == "eventsSection" => {\n    ...,\n    "events": events[]->{\n   ...,\n   event->{\n    ...,\n    "image": image.asset->url\n   }\n    }\n  },\n  _type == "donateSection" => {\n    ...,\n    "image": image.asset->url,\n    cta{\n      ...,\n      "reference": reference->{\n        _type,\n        "slug": slug\n      }\n    }\n  },\n  _type == "statsSection" => {\n    ...\n  }\n}\n  }\n': PAGE_QUERYResult;
-    '\n  *[_type == "home"][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    cta{\n      ...,\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "contentSection" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    }\n  },\n  _type == "teamSection" => {\n    ...,\n    "members": members[]->{\n      _id,\n      name,\n      role,\n      image,\n      bio,\n      organization\n    }\n  },\n  _type == "programsSection" => {\n    ...,\n    "programs": programs[]->{\n      _id,\n      title,\n      slug,\n      description,\n      image,\n      highlights,\n      outcomes,\n      category,\n      organization\n    }\n  },\n  _type == "gallerySection" => {\n    ...,\n    "images": images[]{\n      _key,\n      _type,\n      _type == "image" => {\n        ...,\n        "asset": asset->url,\n        alt,\n        caption\n      }\n    }\n  },\n  _type == "eventsSection" => {\n    ...,\n    "events": events[]->{\n   ...,\n   event->{\n    ...,\n    "image": image.asset->url\n   }\n    }\n  },\n  _type == "donateSection" => {\n    ...,\n    "image": image.asset->url,\n    cta{\n      ...,\n      "reference": reference->{\n        _type,\n        "slug": slug\n      }\n    }\n  },\n  _type == "statsSection" => {\n    ...\n  }\n}\n  }\n': HOME_QUERYResult;
+    '\n  *[_type == "settings"][0] {\n    header {\n      links[] { \n        ..., \n        "reference": reference->{\n          _type,\n          "slug": slug.current\n        }\n      }\n    },\n    footer {\n      links[] { \n        ..., \n        "reference": reference->{\n          _type,\n          "slug": slug.current\n        }\n      }\n    }\n  }\n': SETTINGS_QUERYResult;
+    '\nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    cta{\n      ...,\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "contentSection" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    }\n  },\n  _type == "teamSection" => {\n    ...,\n    "members": members[]->{\n      _id,\n      name,\n      role,\n      image,\n      bio,\n      organization\n    }\n  },\n  _type == "programsSection" => {\n    ...,\n    "programs": programs[]->{\n      _id,\n      title,\n      slug,\n      shortDescription,\n      category,\n      organization,\n      "thumbnail": {\n        "url": thumbnail.asset->url,\n        "alt": thumbnail.alt\n      }\n    }\n  },\n  _type == "gallerySection" => {\n    ...,\n    "images": images[]{\n      _key,\n      _type,\n      _type == "image" => {\n        ...,\n        "asset": asset->url,\n        alt,\n        caption\n      }\n    }\n  },\n  _type == "eventsSection" => {\n    ...,\n    "events": events[]->{\n   ...,\n   event->{\n    ...,\n    "image": image.asset->url\n   }\n    }\n  },\n  _type == "donateSection" => {\n    ...,\n    "image": image.asset->url,\n    cta{\n      ...,\n      "reference": reference->{\n        _type,\n        "slug": slug.current\n      }\n    }\n  },\n  _type == "statsSection" => {\n    ...\n  }\n}': RefinedSectionsFragmentResult;
+    '\n  *[_type == "page" && slug.current == $slug][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    cta{\n      ...,\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "contentSection" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    }\n  },\n  _type == "teamSection" => {\n    ...,\n    "members": members[]->{\n      _id,\n      name,\n      role,\n      image,\n      bio,\n      organization\n    }\n  },\n  _type == "programsSection" => {\n    ...,\n    "programs": programs[]->{\n      _id,\n      title,\n      slug,\n      shortDescription,\n      category,\n      organization,\n      "thumbnail": {\n        "url": thumbnail.asset->url,\n        "alt": thumbnail.alt\n      }\n    }\n  },\n  _type == "gallerySection" => {\n    ...,\n    "images": images[]{\n      _key,\n      _type,\n      _type == "image" => {\n        ...,\n        "asset": asset->url,\n        alt,\n        caption\n      }\n    }\n  },\n  _type == "eventsSection" => {\n    ...,\n    "events": events[]->{\n   ...,\n   event->{\n    ...,\n    "image": image.asset->url\n   }\n    }\n  },\n  _type == "donateSection" => {\n    ...,\n    "image": image.asset->url,\n    cta{\n      ...,\n      "reference": reference->{\n        _type,\n        "slug": slug.current\n      }\n    }\n  },\n  _type == "statsSection" => {\n    ...\n  }\n}\n  }\n': PAGE_QUERYResult;
+    '\n  *[_type == "home"][0] {\n    ...,\n    \nsections[]{\n  ...,\n  _type == "hero" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    cta{\n      ...,\n    }\n  },\n  _type == "cta" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    },\n    "ctas": ctas[]{\n      ...,\n      "href": select(\n        linkType == "external" => externalLink.url,\n        "/" + internalLink.reference->slug.current\n      ),\n      "label": select(\n        linkType == "external" => externalLink.title,\n        internalLink.title\n      )\n    }\n  },\n  _type == "contentSection" => {\n    ...,\n    "media": {\n      ...media,\n      "image": media.image.asset->url\n    }\n  },\n  _type == "teamSection" => {\n    ...,\n    "members": members[]->{\n      _id,\n      name,\n      role,\n      image,\n      bio,\n      organization\n    }\n  },\n  _type == "programsSection" => {\n    ...,\n    "programs": programs[]->{\n      _id,\n      title,\n      slug,\n      shortDescription,\n      category,\n      organization,\n      "thumbnail": {\n        "url": thumbnail.asset->url,\n        "alt": thumbnail.alt\n      }\n    }\n  },\n  _type == "gallerySection" => {\n    ...,\n    "images": images[]{\n      _key,\n      _type,\n      _type == "image" => {\n        ...,\n        "asset": asset->url,\n        alt,\n        caption\n      }\n    }\n  },\n  _type == "eventsSection" => {\n    ...,\n    "events": events[]->{\n   ...,\n   event->{\n    ...,\n    "image": image.asset->url\n   }\n    }\n  },\n  _type == "donateSection" => {\n    ...,\n    "image": image.asset->url,\n    cta{\n      ...,\n      "reference": reference->{\n        _type,\n        "slug": slug.current\n      }\n    }\n  },\n  _type == "statsSection" => {\n    ...\n  }\n}\n  }\n': HOME_QUERYResult;
+    '\n  *[_type == "program" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    shortDescription,\n    date,\n    description[]{\n      ...,\n      _type == "image" => {\n        ...,\n        "url": asset->url\n      },\n      _type == "video" => {\n        ...,\n        "url": asset->url\n      }\n    },\n    highlights,\n    outcomes,\n    category,\n    organization\n  }\n': PROGRAM_DETAIL_QUERYResult;
   }
 }

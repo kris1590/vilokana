@@ -10,6 +10,7 @@ export interface SectionContainerProps
   width?: ContainerWidth;
   as?: "section" | "div";
   className?: string;
+  disablePadding?: boolean;
 }
 
 const spacingClasses: Record<SectionSpacing, string> = {
@@ -33,13 +34,14 @@ const SectionContainer = React.forwardRef<HTMLElement, SectionContainerProps>(
       width = "default",
       as: Component = "section",
       className = "",
+      disablePadding = false,
       ...props
     },
     ref
   ) => (
     <Component
       ref={ref as React.Ref<HTMLDivElement>}
-      className={`${spacingClasses[spacing]} ${className}`.trim()}
+      className={`${disablePadding ? "" : spacingClasses[spacing]} ${className}`.trim()}
       {...props}
     >
       <div className={widthClasses[width]}>{children}</div>

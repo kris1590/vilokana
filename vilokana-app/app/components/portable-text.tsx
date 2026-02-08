@@ -21,11 +21,37 @@ const PortableTextComponent = ({
         components={{
           types: {
             image: ({ value }) => (
-              <img
-                src={urlFor(value).url()}
-                className="w-full"
-                alt={value?.alt || ""}
-              />
+              <figure className="my-6">
+                <img
+                  src={value?.url || urlFor(value).url()}
+                  className="w-full rounded-lg"
+                  alt={value?.alt || ""}
+                />
+                {value?.caption && (
+                  <figcaption className="text-sm text-muted text-center mt-2">
+                    {value.caption}
+                  </figcaption>
+                )}
+              </figure>
+            ),
+            video: ({ value }) => (
+              <figure className="my-6">
+                <div className="aspect-video bg-black rounded-lg overflow-hidden">
+                  <video
+                    src={value?.url}
+                    controls
+                    className="w-full h-full object-contain"
+                    title={value?.title || "Video"}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                {value?.caption && (
+                  <figcaption className="text-sm text-muted text-center mt-2">
+                    {value.caption}
+                  </figcaption>
+                )}
+              </figure>
             ),
           },
           block: {

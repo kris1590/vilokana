@@ -19,19 +19,43 @@ export const programType = defineType({
         source: "title",
         maxLength: 96,
       },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "shortDescription",
+      title: "Short Description",
+      type: "string",
+      description: "Brief description for card display (1-2 lines)",
+      validation: (Rule) => Rule.max(150),
+    }),
+    defineField({
+      name: "thumbnail",
+      title: "Thumbnail",
+      type: "image",
+      description: "Image displayed on program cards",
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt Text",
+          type: "string",
+          description: "Alternative text for accessibility",
+        }),
+      ],
+    }),
+    defineField({
+      name: "date",
+      title: "Date",
+      type: "date",
+      description: "Program date",
     }),
     defineField({
       name: "description",
       title: "Description",
       type: "blockContent",
-    }),
-    defineField({
-      name: "image",
-      title: "Image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
+      description: "Full content with embedded images and videos",
     }),
     defineField({
       name: "highlights",
@@ -76,7 +100,7 @@ export const programType = defineType({
     select: {
       title: "title",
       subtitle: "category",
-      media: "image",
+      media: "thumbnail",
     },
   },
 });

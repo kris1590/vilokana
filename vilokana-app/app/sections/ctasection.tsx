@@ -12,7 +12,7 @@ const CTASection = ({ data }: CTASectionProps) => {
   const hasMedia = media?.type === "image" && media.image;
 
   return (
-    <SectionContainer as="section" spacing="lg" className="bg-primary text-primary-content">
+    <SectionContainer as="section" spacing="lg" className="bg-primary text-primary-content" disablePadding={data.theme?.disablePadding}>
       <div className={hasMedia ? "split-content" : "split-content-centered"}>
         {/* Text Content */}
         <div className={`flex-1 ${hasMedia ? "lg:w-1/2" : "w-full"}`}>

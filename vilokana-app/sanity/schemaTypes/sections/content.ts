@@ -8,7 +8,7 @@ export const contentSectionType = defineType({
     defineField({
       name: "overline",
       title: "Overline",
-      type: "string",
+      type: "blockContent",
       description: "Small text above the title",
     }),
     defineField({
